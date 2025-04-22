@@ -1,7 +1,7 @@
 'use client'
 
-import React, {useEffect, useState, useRef} from 'react'
-import {Button, MotionButton} from '@/components/ui/button'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import { Button, MotionButton } from '@/components/ui/button'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Document, Page, pdfjs } from 'react-pdf'
@@ -14,35 +14,43 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.vers
 export default function ResumeSection() {
     const [numPages, setNumPages] = useState<number | null>(null)
     const [pageNumber, setPageNumber] = useState(1)
-    const [containerSize, setContainerSize] = useState({ width: 800, height: 1131 })
-    const [aspectRatio, setAspectRatio] = useState(1.414)
+    const [containerWidth, setContainerWidth] = useState(600) // Initial width
+    const [aspectRatio, setAspectRatio] = useState<number | null>(null)
     const sectionRef = useRef<HTMLElement>(null)
+    const pdfContainerRef = useRef<HTMLDivElement>(null)
 
-    const calculateContainerSize = () => {
-        const maxWidth = window.innerWidth * 0.9
-        const calculatedWidth = Math.min(maxWidth, 800)
-        const calculatedHeight = calculatedWidth * aspectRatio
-
-        setContainerSize({
-            width: calculatedWidth,
-            height: Math.min(calculatedHeight, window.innerHeight * 0.8)
-        })
-    }
-
-    const onDocumentLoadSuccess = async ({ numPages }: { numPages: number }) => {
+    const onDocumentLoadSuccess = useCallback(async ({ numPages }: { numPages: number }) => {
         setNumPages(numPages)
+        try {
+            const pdf = await pdfjs.getDocument("/data_science.pdf").promise
+            const page = await pdf.getPage(1)
+            const viewport = page.getViewport({ scale: 1 })
+            setAspectRatio(viewport.height / viewport.width)
+        } catch (error) {
+            console.error("Error loading PDF or getting aspect ratio:", error);
+        }
+    }, []);
 
-        const pdf = await pdfjs.getDocument("/data_science.pdf").promise
-        const page = await pdf.getPage(1)
-        const viewport = page.getViewport({ scale: 1 })
-        setAspectRatio(viewport.height / viewport.width)
-    }
+    const updateContainerWidth = useCallback(() => {
+        if (sectionRef.current) {
+            const availableWidth = sectionRef.current.offsetWidth * (window.innerWidth < 768 ? 0.95 : 0.45); // Adjust for padding and screen size
+            setContainerWidth(Math.min(availableWidth, 600)); // Limit maximum width
+        }
+    }, []);
 
     useEffect(() => {
-        calculateContainerSize()
-        window.addEventListener('resize', calculateContainerSize)
-        return () => window.removeEventListener('resize', calculateContainerSize)
-    }, [aspectRatio])
+        updateContainerWidth();
+        window.addEventListener('resize', updateContainerWidth);
+        return () => window.removeEventListener('resize', updateContainerWidth);
+    }, [updateContainerWidth]);
+
+    const calculatedHeight = aspectRatio ? containerWidth * aspectRatio : 'auto';
+    const maxHeight = '80vh';
+    const pdfStyle = {
+        width: `${containerWidth}px`,
+        maxHeight: maxHeight,
+        height: calculatedHeight > maxHeight && calculatedHeight !== 'auto' ? maxHeight : calculatedHeight,
+    };
 
     return (
         <section className="relative w-full min-h-screen overflow-hidden" id="resume" ref={sectionRef}>
@@ -203,13 +211,9 @@ export default function ResumeSection() {
                         viewport={{ once: true, margin: "-100px" }}
                     >
                         <div
+                            ref={pdfContainerRef}
                             className="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700"
-                            style={{
-                                width: `${containerSize.width}px`,
-                                height: `${containerSize.height}px`,
-                                maxWidth: '100%',
-                                maxHeight: '80vh'
-                            }}
+                            style={pdfStyle}
                         >
                             <Document
                                 file="/data_science.pdf"
@@ -225,19 +229,27 @@ export default function ResumeSection() {
                                     </div>
                                 }
                             >
-                                <div className="w-full h-full overflow-auto">
-                                    <Page
-                                        pageNumber={pageNumber}
-                                        width={containerSize.width}
-                                        height={containerSize.height}
-                                        renderTextLayer={false}
-                                        renderAnnotationLayer={false}
-                                        loading={
-                                            <div className="flex items-center justify-center h-full">
-                                                <p className="text-gray-500 dark:text-gray-400">Loading page...</p>
-                                            </div>
-                                        }
-                                    />
+                                <div className="w-full overflow-auto" style={{ maxHeight: 'calc(80vh - 40px)' }}> {/* Adjust for controls */}
+                                    {aspectRatio && (
+                                        <div style={{ height: containerWidth * aspectRatio, maxHeight: 'calc(80vh - 40px)' }}>
+                                            <Page
+                                                pageNumber={pageNumber}
+                                                width={containerWidth}
+                                                renderTextLayer={false}
+                                                renderAnnotationLayer={false}
+                                                loading={
+                                                    <div className="flex items-center justify-center h-full">
+                                                        <p className="text-gray-500 dark:text-gray-400">Loading page...</p>
+                                                    </div>
+                                                }
+                                            />
+                                        </div>
+                                    )}
+                                    {!aspectRatio && (
+                                        <div className="flex items-center justify-center h-full">
+                                            <p className="text-gray-500 dark:text-gray-400">Loading PDF info...</p>
+                                        </div>
+                                    )}
                                 </div>
                             </Document>
 
