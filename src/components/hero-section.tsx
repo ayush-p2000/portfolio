@@ -16,7 +16,7 @@ export default function HeroSection() {
     return (
         <>
             <HeroHeader />
-            <main className="overflow-x-hidden h-screen">
+            <div className="overflow-x-hidden">
                 <div className="w-full absolute inset-0 h-screen">
                     <SparklesCore
                         id="tsparticlesfullpage"
@@ -200,7 +200,7 @@ export default function HeroSection() {
                         </div>
                     </div>
                 </section>
-            </main>
+            </div>
         </>
     );
 }
