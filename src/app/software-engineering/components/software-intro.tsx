@@ -52,7 +52,8 @@ const SoftwareIntro = () => {
         }, 2000);
 
         return () => clearInterval(interval);
-    }, [index]);
+    }, [index, keywords.length]);
+
 
     // Highlight matched keywords
     const formatText = () => {

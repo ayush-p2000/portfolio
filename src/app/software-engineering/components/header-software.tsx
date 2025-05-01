@@ -161,19 +161,14 @@ export const SoftwareHeader = () => {
 
             {/* Add some styles for the active state */}
             <style jsx global>{`
-                .runningRGB {
-                    background: linear-gradient(90deg, 
-                        rgba(255, 0, 0, 0.5), 
-                        rgba(0, 255, 0, 0.5), 
-                        rgba(0, 0, 255, 0.5), 
-                        rgba(255, 0, 0, 0.5));
-                    background-size: 300% 100%;
-                    animation: runningRGB 3s linear infinite;
-                }
-                
+
                 @keyframes runningRGB {
-                    0% { background-position: 0% 50%; }
-                    100% { background-position: 100% 50%; }
+                    0% {
+                        background-position: 0 50%;
+                    }
+                    100% {
+                        background-position: 100% 50%;
+                    }
                 }
             `}</style>
         </header>

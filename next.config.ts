@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
 
     images: {
-        domains: ['res.cloudinary.com'],
+        domains: ['upload.wikimedia.org', 'res.cloudinary.com'],
     },
 };
 

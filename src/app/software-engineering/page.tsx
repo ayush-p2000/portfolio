@@ -1,5 +1,4 @@
 import Cursor from "@/components/ui/cursor";
-import {InteractiveGridPattern} from "@/components/magicui/interactive-grid-pattern";
 import {SoftwareHeader} from "@/app/software-engineering/components/header-software";
 import HeroSoftware from "@/app/software-engineering/components/hero-software";
 import ResumeSoftware from "@/app/software-engineering/components/resume-software";

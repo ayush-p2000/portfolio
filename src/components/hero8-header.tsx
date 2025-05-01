@@ -2,7 +2,6 @@
 import Link from 'next/link'
 import { Logo } from './logo'
 import { Menu, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import React from 'react'
 import { ModeToggle } from "@/components/mode-toggle";
 
@@ -71,7 +70,7 @@ export const HeroHeader = () => {
                                     {/* RGB Border Effect */}
                                     <div className="absolute -inset-1 rounded-lg runningRGB opacity-75 blur"></div>
                                     {/* Menu Container */}
-                                    <div className="relative rounded-lg bg-background p-6 shadow-lg dark:bg-gray-900 bg-gray-200">
+                                    <div className="relative rounded-lg p-6 shadow-lg dark:bg-gray-900 bg-gray-200">
                                         <ul className="space-y-6 text-base">
                                             {menuItems.map((item, index) => (
                                                 <li key={index}>

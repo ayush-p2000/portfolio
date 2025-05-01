@@ -1,33 +1,33 @@
-'use client'
+"use client";
 
-import React from 'react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import { HeroHeader } from '@/components/hero8-header'
-import { InfiniteSlider } from '@/components/ui/infinite-slider'
-import { ProgressiveBlur } from '@/components/ui/progressive-blur'
+import React from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { HeroHeader } from '@/components/hero8-header';
+import { InfiniteSlider } from '@/components/ui/infinite-slider';
+import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 import TypingName from '@/components/TypingName';
 import TypingIntro from '@/components/TypingIntro';
 import { motion } from 'framer-motion';
-import {SparklesCore} from "@/components/ui/sparkles";
+import { SparklesCore } from "@/components/ui/sparkles";
 
 export default function HeroSection() {
     return (
         <>
             <HeroHeader />
             <main className="overflow-x-hidden h-screen">
-                    <div className="w-full absolute inset-0 h-screen">
-                        <SparklesCore
-                            id="tsparticlesfullpage"
-                            background="transparent"
-                            minSize={0.6}
-                            maxSize={1.4}
-                            particleDensity={100}
-                            className="w-full h-full"
-                            particleColor="#FFFFFF"
-                        />
-                    </div>
+                <div className="w-full absolute inset-0 h-screen">
+                    <SparklesCore
+                        id="tsparticlesfullpage"
+                        background="transparent"
+                        minSize={0.6}
+                        maxSize={1.4}
+                        particleDensity={100}
+                        className="w-full h-full"
+                        particleColor="#FFFFFF"
+                    />
+                </div>
                 <section>
                     <div className="pb-24 pt-12 md:pb-32 lg:pb-56 lg:pt-44">
                         <div className="relative mx-auto flex max-w-6xl flex-col px-6 lg:block">
@@ -36,49 +36,25 @@ export default function HeroSection() {
                                     Hi! I am <br />
                                     <TypingName />
                                 </h1>
-                                {/*<p className="mt-8 max-w-2xl text-pretty text-xl opacity-0 animate-fade-in-up animation-delay-500">*/}
-                                {/*    I'm a <span className="font-bold">Software Engineer</span> and <span className="font-bold">Data Scientist</span> passionate about building scalable systems and uncovering insights from data. I blend coding expertise with analytical thinking to solve complex, real-world problems.*/}
-                                {/*</p>*/}
 
                                 <TypingIntro />
 
-
                                 <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
-                                    <Button
-                                        asChild
-                                        size="lg"
-                                        className="px-5 text-base">
+                                    <Button asChild size="lg" className="px-5 text-base">
                                         <Link href="/software-engineering">
                                             <span className="text-nowrap">Software Engineering</span>
                                         </Link>
                                     </Button>
-                                    <Button
-                                        key={2}
-                                        asChild
-                                        size="lg"
-                                        variant="ghost"
-                                        className="px-5 text-base">
+                                    <Button key={2} asChild size="lg" variant="ghost" className="px-5 text-base">
                                         <Link href="/data-scientist">
                                             <span className="text-nowrap">Data Scientist</span>
                                         </Link>
                                     </Button>
-
-
                                 </div>
 
                                 <motion.div
-                                    initial={{
-                                        opacity: 0,
-                                        scale: 0.9,
-                                        filter: "blur(15px)",
-                                        x: 200
-                                    }}
-                                    animate={{
-                                        opacity: 1,
-                                        scale: 1,
-                                        filter: "blur(0px)",
-                                        x: 0
-                                    }}
+                                    initial={{ opacity: 0, scale: 0.9, filter: "blur(15px)", x: 200 }}
+                                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)", x: 0 }}
                                     transition={{
                                         duration: 1.5,
                                         ease: [0.25, 0.1, 0.25, 1],
@@ -94,132 +70,118 @@ export default function HeroSection() {
                                         width={800}
                                     />
                                 </motion.div>
-
                             </div>
-
-
                         </div>
-
                     </div>
                 </section>
+
                 <section className="bg-background pb-16 md:pb-32">
                     <div className="group relative m-auto max-w-6xl px-6">
                         <div className="flex flex-col items-center md:flex-row">
                             <div className="md:max-w-44 md:border-r md:pr-6">
-                                <p className="text-end text-sm">Built with the best <br/>Tech Stack</p>
+                                <p className="text-end text-sm">Built with the best <br />Tech Stack</p>
                             </div>
                             <div className="relative py-6 md:w-[calc(100%-11rem)]">
-                                <InfiniteSlider
-                                    speedOnHover={20}
-                                    speed={200}
-                                    gap={112}>
+                                <InfiniteSlider speedOnHover={20} speed={200} gap={112}>
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit"
                                             src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"
                                             alt="React Logo"
-                                            height="50"
-                                            width="auto"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
-
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit dark:invert"
                                             src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Nextjs-logo.svg"
                                             alt="Next.js Logo"
-                                            height="50"
-                                            width="auto"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
-
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit dark:invert"
                                             src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg"
                                             alt="GitHub Logo"
-                                            height="50"
-                                            width="auto"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
-
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit"
                                             src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg"
                                             alt="Node.js Logo"
-                                            height="50"
-                                            width="auto"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
-
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit"
                                             src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg"
                                             alt="Tailwind CSS Logo"
-                                            height="50"
-                                            width="auto"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
-
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit"
                                             src="/ts-logo.png"
                                             alt="TypeScript Logo"
-                                            height="128"
-                                            width="128"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
-
                                     <div className="flex">
-                                        <img
-                                            className="mx-auto h-10 w-fit"
+                                        <Image
+                                            className="mx-auto h-10 w-fit dark:invert"
                                             src="https://upload.wikimedia.org/wikipedia/commons/0/03/Git_format.png"
                                             alt="Git Logo"
-                                            height="50"
-                                            width="auto"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
-
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit dark:invert"
                                             src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Vercel_logo_2025.svg"
                                             alt="Vercel Logo"
-                                            height="50"
-                                            width="auto"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit"
                                             src="/clnpng.png"
                                             alt="CleanPNG Logo"
-                                            height="142"
-                                            width="614"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit"
                                             src="/pngtree.jpg"
                                             alt="PNGTree Logo"
-                                            height="400"
-                                            width="400"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
                                     <div className="flex">
-                                        <img
+                                        <Image
                                             className="mx-auto h-10 w-fit"
                                             src="/redux.png"
                                             alt="Redux Logo"
-                                            height="480"
-                                            width="531"
+                                            height={40}
+                                            width={40}
                                         />
                                     </div>
-
                                 </InfiniteSlider>
 
                                 <div className="bg-linear-to-r from-background absolute inset-y-0 left-0 w-20"></div>
@@ -240,5 +202,5 @@ export default function HeroSection() {
                 </section>
             </main>
         </>
-    )
+    );
 }

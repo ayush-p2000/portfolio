@@ -1,4 +1,4 @@
-'use client' // Required for Next.js App Router components using client-side hooks/interactivity
+'use client';
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
@@ -7,7 +7,6 @@ const Cursor = () => {
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
 
-    // Smoother spring configuration
     const springConfig = { stiffness: 300, damping: 30 };
     const smoothX = useSpring(cursorX, springConfig);
     const smoothY = useSpring(cursorY, springConfig);
@@ -18,7 +17,7 @@ const Cursor = () => {
     useEffect(() => {
         const handleTouchStart = () => {
             setTouchDetected(true);
-            setShowCursor(false); // Hide cursor on touch start
+            setShowCursor(false);
             window.removeEventListener("mousemove", handleMouseMove);
         };
 
@@ -37,13 +36,12 @@ const Cursor = () => {
             window.removeEventListener("touchstart", handleTouchStart);
             window.removeEventListener("mousemove", handleMouseMove);
         };
-    }, [touchDetected]);
+    }, [touchDetected, cursorX, cursorY]);
 
     if (!showCursor) return null;
 
-    // Adjust the cursor to stay under the mouse pointer by adding an offset
-    const offsetX = -16;  // Horizontal offset from the mouse pointer (half the cursor width)
-    const offsetY = 16;   // Vertical offset from the mouse pointer (below the pointer)
+    const offsetX = -16;
+    const offsetY = 16;
 
     return (
         <motion.div
@@ -51,8 +49,8 @@ const Cursor = () => {
             style={{
                 translateX: smoothX,
                 translateY: smoothY,
-                x: offsetX,  // Offsetting cursor below the pointer
-                y: offsetY,  // Offset downward
+                x: offsetX,
+                y: offsetY,
                 boxShadow: "0 0 15px rgba(255, 0, 255, 0.6), 0 0 25px rgba(255, 0, 255, 0.3)",
                 scale: showCursor ? 1 : 0,
             }}

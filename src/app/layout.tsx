@@ -6,7 +6,7 @@ import { Orbitron } from 'next/font/google';
 import { Roboto } from 'next/font/google';
 import { Inter } from 'next/font/google';
 import Footer from "@/components/footer";
-import {Logo} from "@/components/logo";
+import React from "react";
 
 const inter = Inter({
     subsets: ['latin'],

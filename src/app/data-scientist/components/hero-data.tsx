@@ -9,7 +9,7 @@ import DataIntro from "@/app/data-scientist/components/data-intro";
 import Link from "next/link";
 
 export default function HeroData() {
-    const [isVisible, setIsVisible] = useState(false);
+    const [, setIsVisible] = useState(false);
     const controls = useAnimationControls();
     const imageControls = useAnimationControls();
     const scrollImageControls = useAnimationControls();

@@ -1,19 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { Menu, X } from 'lucide-react'
 import React from 'react'
-import { ModeToggle } from "@/components/mode-toggle";
 import {Logo} from "@/components/logo";
 
 
 export const ContactHeader = () => {
-    const [menuState, setMenuState] = React.useState(false)
-
-    const handleMenuItemClick = () => {
-        setMenuState(false)
-    }
-
+    const [menuState] = React.useState(false)
     return (
         <header>
             <nav

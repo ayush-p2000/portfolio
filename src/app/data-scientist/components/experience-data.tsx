@@ -2,8 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useAnimation, useInView, AnimatePresence } from 'framer-motion'
-import Image from 'next/image'
-import { Button } from '@/components/ui/button'
 import { FiExternalLink, FiChevronDown, FiChevronUp } from 'react-icons/fi'
 
 interface ExperienceItemProps {

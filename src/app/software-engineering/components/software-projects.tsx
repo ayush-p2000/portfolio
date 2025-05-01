@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
@@ -74,7 +74,7 @@ const filters = [
 ];
 
 
-const ProjectCard = ({ project, index }: { project: Project, index: number }) => {
+const ProjectCard = ({ project}: { project: Project, index: number }) => {
     const cardRef = useRef(null)
     const { scrollYProgress } = useScroll({
         target: cardRef,

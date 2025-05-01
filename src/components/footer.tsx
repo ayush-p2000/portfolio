@@ -2,11 +2,8 @@
 
 import { motion, Variants } from 'framer-motion'
 import { Mail, Phone, MapPin, Linkedin, Github } from 'lucide-react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
-
-const email = process.env.NEXT_PUBLIC_EMAIL
-const phone = process.env.NEXT_PUBLIC_PHONE
 
 type SocialLink = {
     name: string
@@ -16,7 +13,7 @@ type SocialLink = {
 }
 
 export default function Footer() {
-    const [activeLink, setActiveLink] = useState<string | null>(null)
+    const [, setActiveLink] = useState<string | null>(null)
 
     // Animation variants
     const containerVariants: Variants = {

@@ -78,7 +78,7 @@ const filters = [
     'SaaS Applications',
 ]
 
-const ProjectCard = ({ project, index }: { project: Project, index: number }) => {
+const ProjectCard = ({ project}: { project: Project, index: number }) => {
     const cardRef = useRef(null)
     const { scrollYProgress } = useScroll({
         target: cardRef,
@@ -226,7 +226,7 @@ export default function ProjectsSection() {
     const [activeFilter, setActiveFilter] = useState('All')
     const [isFilterOpen, setIsFilterOpen] = useState(false)
     const sectionRef = useRef(null)
-    const [isMounted, setIsMounted] = useState(false)
+    const [, setIsMounted] = useState(false)
 
     useEffect(() => {
         setIsMounted(true)
@@ -247,17 +247,6 @@ export default function ProjectsSection() {
     const opacityBg = useTransform(scrollYProgress, [0, 0.5], [1, 0.3])
 
     // Floating animation for filter buttons
-    const floatingVariants = {
-        float: {
-            y: [0, -10, 0],
-            transition: {
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-            }
-        }
-    }
-
     return (
         <section id="projects" ref={sectionRef} className="relative w-full min-h-screen overflow-hidden py-24">
             {/* Animated background gradient */}

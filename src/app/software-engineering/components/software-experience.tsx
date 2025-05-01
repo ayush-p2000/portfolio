@@ -4,15 +4,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useAnimation, useInView, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { FiExternalLink, FiChevronDown, FiChevronUp } from 'react-icons/fi'
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 import { IoMdPaperPlane } from 'react-icons/io'
 import {
-    FaReact, FaNodeJs, FaPython, FaJava, FaPhp, FaDocker,
-    FaAws, FaJira, FaDatabase
+    FaReact, FaNodeJs, FaPython, FaPhp, FaJira, FaDatabase
 } from 'react-icons/fa'
 import {
-    SiJavascript, SiTypescript, SiCplusplus, SiMongodb,
-    SiExpress, SiKubernetes, SiGooglecloud, SiFirebase
+    SiJavascript
 } from 'react-icons/si'
 // import { TbBrandStreamlit } from 'react-icons/tb'
 import { CgInfinity } from 'react-icons/cg'

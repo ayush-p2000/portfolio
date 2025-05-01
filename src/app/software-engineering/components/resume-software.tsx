@@ -245,13 +245,12 @@ export default function ResumeSoftware() {
                                                 animate={controls}
                                                 whileHover="hover"
                                                 style={{
-                                                    // @ts-ignore
+                                                    // @ts-expect-error -- CSS custom properties not typed
                                                     "--tw-bg-opacity": 1,
-                                                    // @ts-ignore
                                                     "--tw-gradient-from": item.color,
-                                                    // @ts-ignore
                                                     "--tw-gradient-to": item.color,
                                                 }}
+
                                             >
                                                 <span className={`absolute -left-8 text-xl`}>{item.icon}</span>
                                                 <span className="font-semibold text-gray-900 dark:text-white">{item.title}</span> -

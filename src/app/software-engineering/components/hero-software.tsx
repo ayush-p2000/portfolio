@@ -3,10 +3,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { motion, useAnimationControls, AnimatePresence, AnimationControls } from 'framer-motion'
+import { motion, useAnimationControls, AnimatePresence } from 'framer-motion'
 import Cursor from '@/components/ui/cursor'
 import Link from "next/link"
-import { useInView } from 'framer-motion'
 import SoftwareIntro from "@/app/software-engineering/components/software-intro";
 
 // Define types for component
@@ -24,7 +23,6 @@ const HeroSoftware: React.FC = () => {
     // State management with TypeScript types
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 })
-    const [isHovered, setIsHovered] = useState<boolean>(false)
     const [activeButton, setActiveButton] = useState<number | null>(null)
 
     // Refs and hooks

@@ -1,7 +1,7 @@
 'use client';
 import { cn } from '@/lib/utils';
 import { useMotionValue, animate, motion } from 'motion/react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import useMeasure from 'react-use-measure';
 
 export type InfiniteSliderProps = {
@@ -23,7 +23,7 @@ export function InfiniteSlider({
   reverse = false,
   className,
 }: InfiniteSliderProps) {
-  const [currentSpeed, setCurrentSpeed] = useState(speed);
+  const [currentSpeed] = useState(speed);
   const [ref, { width, height }] = useMeasure();
   const translation = useMotionValue(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -79,16 +79,8 @@ export function InfiniteSlider({
 
   const hoverProps = speedOnHover
     ? {
-        onHoverStart: () => {
-          setIsTransitioning(true);
-          setCurrentSpeed(speedOnHover);
-        },
-        onHoverEnd: () => {
-          setIsTransitioning(true);
-          setCurrentSpeed(speed);
-        },
       }
-    : {};
+      : {};
 
   return (
     <div className={cn('overflow-hidden', className)}>
