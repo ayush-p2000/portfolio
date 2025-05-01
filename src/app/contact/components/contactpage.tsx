@@ -529,7 +529,7 @@ const ContactForm: () => JSX.Element = () => {
 
                         <motion.button
                             type="submit"
-                            className="w-full px-4 sm:px-6 py-2 sm:py-3 rounded-md text-white font-semibold text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200 ease-in-out"
+                            className="w-full mt-5 px-4 sm:px-6 py-2 sm:py-3 rounded-md text-white font-semibold text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200 ease-in-out"
                             variants={buttonVariants}
                             initial="initial"
                             whileHover={isSubmitting ? 'disabled' : 'hover'}
