@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
+import Link from "next/link";
 
 // Configure PDF.js worker path
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
@@ -176,13 +177,14 @@ export default function ResumeSection() {
                                     size="lg"
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="font-[Roboto Mono]"
+                                    className="font-[Roboto Mono] cursor-pointer"
                                 >
                                     <a href="/data_science.pdf" download="Ayush_DataScience_Resume.pdf">
                                         Download PDF
                                     </a>
                                 </MotionButton>
 
+                                <Link href="/contact">
                                 <MotionButton
                                     variant="outline"
                                     size="lg"
@@ -191,10 +193,11 @@ export default function ResumeSection() {
                                         backgroundColor: "hsl(var(--accent))"
                                     }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="font-[Roboto Mono]"
+                                    className="font-[Roboto Mono] cursor-pointer"
                                 >
                                     Contact Me
                                 </MotionButton>
+                                </Link>
                             </motion.div>
                         </div>
                     </motion.section>

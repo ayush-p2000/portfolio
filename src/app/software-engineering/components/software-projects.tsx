@@ -17,66 +17,62 @@ type Project = {
     forks?: number
 }
 
+// Updated project data
 const projects: Project[] = [
     {
-        title: 'Sentiment Analysis on Twitter Data',
-        category: 'NLP',
-        description:
-            'Analyzed 1.6M tweets using NLP models (Logistic Regression, SVM, Naive Bayes) with Tfidf, VADER, and visualization.',
-        tags: ['Python', 'NLP', 'Scikit-learn', 'VADER', 'TfidfVectorizer'],
-        github: 'https://github.com/ayush-p2000/Twitter_sentiment',
-    },
-    {
-        title: 'MNIST Digit Prediction',
-        category: 'Object Detection',
-        description:
-            'Built and trained a CNN to classify handwritten digits using the MNIST dataset, achieving high accuracy.',
-        tags: ['Python', 'CNN', 'TensorFlow', 'MNIST'],
-        github: 'https://github.com/ayush-p2000/MNIST-prediction',
-    },
-    {
-        title: 'Employee Management System',
+        title: 'ePanda Recycling System',
         category: 'SaaS Applications',
-        description:
-            'Developed a CRUD-based employee management system with role-based access, form validations, and analytics.',
-        tags: ['Python', 'Streamlit', 'MySQL', 'GoogleOAuth', 'CRUD'],
-        link: 'https://example.com',
-        github: 'https://github.com/ayush-p2000/Employee-Management-System',
+        description: 'Led the development of a full-stack web application for recycling eWastes, featuring user/admin panels, reporting, payment integration, and 80% test coverage.',
+        tags: ['NodeJS', 'ExpressJS', 'MongoDB', 'EJS', 'JavaScript', 'PassportJS', 'GCP', 'OAuth', 'Stripe API', 'PayPal API', 'Mocha', 'Chai', 'Figma'],
+        github: 'https://github.com/ayush-p2000/COM6103-Team-Project',
     },
     {
-        title: 'Text Generation using NLP Techniques',
+        title: 'Dissertation: Semantic Tableaux Logic Solver',
+        category: 'AI / Web Development',
+        description: 'Developed an AI-driven web-based logic solver using Python and Streamlit for real-time formula validation, visualization, and large-scale logic analysis.',
+        tags: ['Python', 'Streamlit', 'Collections Framework', 'NetworkX', 'Matplotlib', 'pydot', 'AI', 'Parser'],
+        github: 'https://github.com/ayush-p2000/semantic-tableaux',
+    },
+    {
+        title: 'Plant Recognition System',
+        category: 'Web Development',
+        description: 'Collaborated on and led the development of a plant recognition platform with real-time messaging, plant data retrieval (SPARQL), and location logging.',
+        tags: ['NodeJS', 'ExpressJS', 'MongoDB', 'EJS', 'JavaScript', 'Socket.io', 'SPARQL', 'HTML', 'CSS', 'Bootstrap'],
+        github: 'https://github.com/Intelligent-Web-PROJECT/Team-Project',
+    },
+    {
+        title: 'Text Generator using NLP Techniques',
         category: 'NLP',
-        description:
-            'Implemented language models using Java data structures and self made algorithms to generate coherent text from input sequences.',
-        tags: ['Java', 'Data Structures', 'Probability', 'Swing', 'Text Generation'],
+        description: 'Led the development of an NLP application using Java to complete sentences based on initial words, featuring a GUI for visual representation.',
+        tags: ['Java', 'Java Swing', 'Java AWT', 'NLP', 'Data Structures'],
         github: 'https://github.com/ayush-p2000/Generate-Text-using-Bigrams-or-Trigrams',
     },
     {
-        title: 'Face Mask Detection System',
-        category: 'Computer Vision',
-        description:
-            'Trained a real-time face mask detection system using OpenCV and Keras library for image classification.',
-        tags: ['Python', 'OpenCV', 'Deep Learning', 'Keras', 'TensorFlow', 'Computer Vision'],
-        github: 'https://github.com/ayush-p2000/Facemask-Detection-System',
+        title: 'Repairer\'s Hub Android Application',
+        category: 'Mobile Application Development',
+        description: 'Led the development of an Android application for an electronics repairing system, implementing Firebase authentication and a reporting system.',
+        tags: ['Java', 'Android', 'SQLite', 'Firebase Auth', 'Firebase Realtime DB', 'XML', 'Gradle'],
+        github: 'https://github.com/ayush-p2000/Android-Application-RepairersHub',
     },
     {
-        title: 'YouTube Video Comments Analysis',
-        category: 'Data Analysis',
-        description:
-            'Used GCP YouTube API to extract Data and performed exploratory data analysis on the dataset with Visualization for the user',
-        tags: ['Python', 'Pandas', 'Sentiment', 'Plotly', 'GCP YouTube API'],
-        github: 'https://github.com/ayush-p2000/youtube-video-comment-extractor',
+        title: 'Kotlin To-Do App',
+        category: 'Mobile Application Development',
+        description: 'Developed a To-Do list application using Kotlin and Jetpack Compose, featuring location services integration, picture uploads, and task tracking.',
+        tags: ['Kotlin', 'Jetpack Compose', 'Android', 'Location Services', 'Image Upload', 'Task Management'],
+        github: 'https://github.com/ayush-p2000/To-Do-List',
     },
-]
+];
 
+// Updated filters based on the project categories
 const filters = [
     'All',
-    'Data Analysis',
-    'Computer Vision',
-    'Object Detection',
-    'NLP',
     'SaaS Applications',
-]
+    'AI / Web Development',
+    'Web Development',
+    'NLP',
+    'Mobile Application Development',
+];
+
 
 const ProjectCard = ({ project, index }: { project: Project, index: number }) => {
     const cardRef = useRef(null)
@@ -209,6 +205,8 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
                         </Button>
                     </motion.div>
                 )}
+                {/* You can add a link button here if project.link exists */}
+                {/* {project.link && ( ... )} */}
             </div>
 
             {/* Floating corner accent */}
@@ -222,15 +220,11 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
     )
 }
 
-export default function ProjectsSection() {
+export default function ProjectsSoftware() {
     const [activeFilter, setActiveFilter] = useState('All')
     const [isFilterOpen, setIsFilterOpen] = useState(false)
     const sectionRef = useRef(null)
-    const [isMounted, setIsMounted] = useState(false)
-
-    useEffect(() => {
-        setIsMounted(true)
-    }, [])
+    // Removed isMounted state and useEffect as they caused conditional Hook calls
 
     const filteredProjects =
         activeFilter === 'All'
@@ -238,6 +232,7 @@ export default function ProjectsSection() {
             : projects.filter(p => p.category === activeFilter)
 
     // Parallax effect for background
+    // These hooks are now called unconditionally
     const { scrollYProgress } = useScroll({
         target: sectionRef,
         offset: ["start start", "end start"]
@@ -258,6 +253,13 @@ export default function ProjectsSection() {
         }
     }
 
+    // Removed the conditional return based on isMounted.
+    // Framer Motion hooks handle server rendering appropriately or expect a client environment.
+    // Ensure this component is only rendered client-side if Framer Motion requires it,
+    // e.g., using dynamic import with ssr: false in Next.js if needed.
+    // However, removing the conditional return is the direct fix for the Hook order error.
+
+
     return (
         <section id="projects" ref={sectionRef} className="relative w-full min-h-screen overflow-hidden py-24">
             {/* Animated background gradient */}
@@ -271,20 +273,20 @@ export default function ProjectsSection() {
                 style={{ y: useTransform(scrollYProgress, [0, 1], [0, 100]) }}
                 className="absolute bottom-0 left-0 right-0 z-[-1] w-full"
             >
+                {/* Ensure Image component has correct props */}
                 <Image
-                    src="/mountains.png"
+                    src="/mountains.png" // Make sure this path is correct in your project
                     alt="Mountains"
                     className="object-cover object-bottom dark:block hidden w-full"
                     width={2560}
                     height={1200}
                     priority
-                    sizes="100vw"
+                    sizes="100vw" // Consider adjusting sizes based on layout
                     style={{
-                        width: '100vw',
+                        width: '100%', // Use 100% width for responsiveness
                         height: 'auto',
-                        position: 'relative',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
+                        position: 'relative', // Adjust if needed
+                        // Removed left and transform for simpler centering if parent handles it
                     }}
                 />
             </motion.div>
@@ -318,7 +320,8 @@ export default function ProjectsSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: i * 0.1 + 0.6 }}
                             viewport={{ once: true }}
-                            whileHover="float"
+                            whileHover="float" // Ensure floatingVariants is defined if using this
+                            variants={floatingVariants} // Add this if using whileHover="float"
                         >
                             <Button
 
@@ -328,8 +331,8 @@ export default function ProjectsSection() {
                             >
                                 {activeFilter === filter && (
                                     <motion.span
-                                        layoutId="activeFilter"
-                                        className="absolute inset-0 bg-blue-500/10 dark:bg-purple-500/10"
+                                        layoutId="activeFilter" // Ensure layoutId is unique or consistent as needed
+                                        className="absolute inset-0 bg-blue-500/10 dark:bg-purple-500/10 rounded-md" // Added rounded-md for consistency
                                         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                                     />
                                 )}
@@ -392,43 +395,52 @@ export default function ProjectsSection() {
                 </div>
 
                 {/* Project Cards */}
-                {filteredProjects.length > 0 ? (
-                    <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-                        {filteredProjects.map((project, index) => (
-                            <ProjectCard key={index} project={project} index={index} />
-                        ))}
-                    </div>
-                ) : (
+                <AnimatePresence mode="wait"> {/* Added AnimatePresence for smoother filter transitions */}
                     <motion.div
+                        key={activeFilter} // Key change triggers animation
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center py-20"
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="grid gap-10 md:grid-cols-2 lg:grid-cols-3"
                     >
-                        <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">
-                            No projects found in this category
-                        </h3>
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="mt-6 inline-block"
-                        >
-                            <Button onClick={() => setActiveFilter('All')}>
-                                View All Projects
-                            </Button>
-                        </motion.div>
+                        {filteredProjects.length > 0 ? (
+                            filteredProjects.map((project, index) => (
+                                <ProjectCard key={project.title} project={project} index={index} /> // Use unique key like title
+                            ))
+                        ) : (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.6 }}
+                                className="text-center py-20 col-span-full" // Span full width
+                            >
+                                <h3 className="text-xl font-medium text-gray-600 dark:text-gray-400">
+                                    No projects found in this category
+                                </h3>
+                                <motion.div
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="mt-6 inline-block"
+                                >
+                                    <Button onClick={() => setActiveFilter('All')}>
+                                        View All Projects
+                                    </Button>
+                                </motion.div>
+                            </motion.div>
+                        )}
                     </motion.div>
-                )}
+                </AnimatePresence>
 
                 {/* Floating CTA at bottom */}
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
+                    transition={{ delay: filteredProjects.length > 0 ? 0.8 : 0.2 }} // Adjust delay based on content
                     viewport={{ once: true, margin: "0px 0px -100px 0px" }}
                     className="text-center mt-20"
                 >
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    <p className="text-gray-600 dark:text-gray-200 mb-6">
                         Want to see more of my work?
                     </p>
                     <motion.div

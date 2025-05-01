@@ -166,10 +166,10 @@ export default function HeroSection() {
                                     <div className="flex">
                                         <img
                                             className="mx-auto h-10 w-fit"
-                                            src="https://upload.wikimedia.org/wikipedia/commons/9/93/MongoDB_Logo.svg"
-                                            alt="MongoDB Logo"
-                                            height="50"
-                                            width="auto"
+                                            src="/ts-logo.png"
+                                            alt="TypeScript Logo"
+                                            height="128"
+                                            width="128"
                                         />
                                     </div>
 
@@ -190,6 +190,33 @@ export default function HeroSection() {
                                             alt="Vercel Logo"
                                             height="50"
                                             width="auto"
+                                        />
+                                    </div>
+                                    <div className="flex">
+                                        <img
+                                            className="mx-auto h-10 w-fit"
+                                            src="/clnpng.png"
+                                            alt="CleanPNG Logo"
+                                            height="142"
+                                            width="614"
+                                        />
+                                    </div>
+                                    <div className="flex">
+                                        <img
+                                            className="mx-auto h-10 w-fit"
+                                            src="/pngtree.jpg"
+                                            alt="PNGTree Logo"
+                                            height="400"
+                                            width="400"
+                                        />
+                                    </div>
+                                    <div className="flex">
+                                        <img
+                                            className="mx-auto h-10 w-fit"
+                                            src="/redux.png"
+                                            alt="Redux Logo"
+                                            height="480"
+                                            width="531"
                                         />
                                     </div>
 

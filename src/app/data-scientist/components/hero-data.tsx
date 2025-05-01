@@ -140,12 +140,12 @@ export default function HeroData() {
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                                    <Button className="px-6 py-3 text-base font-[Roboto Mono]">
+                                    <Button className="px-6 py-3 text-base font-[Roboto Mono] cursor-pointer">
                                         <Link href="#projects" className="scroll-smooth">
                                             View Projects
                                         </Link>
                                     </Button>
-                                    <Button variant="outline" className="px-6 py-3 text-base font-[Roboto Mono]">
+                                    <Button variant="outline" className="px-6 py-3 text-base font-[Roboto Mono] cursor-pointer">
                                         <Link href="#resume" className="scroll-smooth">
                                             Download Resume
                                         </Link>

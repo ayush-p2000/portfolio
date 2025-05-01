@@ -7,7 +7,7 @@ import React from 'react'
 import { ModeToggle } from "@/components/mode-toggle";
 
 const menuItems = [
-    { name: 'Contact', href: '#link' }
+    { name: 'Contact', href: '/contact' }
 ]
 
 export const HeroHeader = () => {

@@ -1,4 +1,4 @@
-// app/data-scientist/components/header-data-portfolio.tsx
+
 'use client'
 
 import { SmoothScrollLink } from '@/components/smooth-scroll-link';
@@ -16,7 +16,7 @@ const menuItems = [
     { name: 'Contact', href: '/contact', section: 'contact' }
 ]
 
-export const DataHeader = () => {
+export const SoftwareHeader = () => {
     const [menuState, setMenuState] = useState(false)
     const [activeSection, setActiveSection] = useState('home')
 
