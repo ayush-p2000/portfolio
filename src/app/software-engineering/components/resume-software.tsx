@@ -81,6 +81,26 @@ export default function ResumeSoftware() {
         }
     }, [isInView, controls])
 
+    const hasMouse = useHasMouse();
+
+
+    function useHasMouse() {
+        const [hasMouse, setHasMouse] = useState(false);
+
+        useEffect(() => {
+            const mediaQuery = window.matchMedia("(pointer: fine)");
+            setHasMouse(mediaQuery.matches);
+
+            const handler = (e: MediaQueryListEvent) => setHasMouse(e.matches);
+            mediaQuery.addEventListener("change", handler);
+
+            return () => mediaQuery.removeEventListener("change", handler);
+        }, []);
+
+        return hasMouse;
+    }
+
+
     const calculatedHeight = aspectRatio ? containerWidth * aspectRatio : 'auto';
     const maxHeight = '80vh';
     const pdfStyle = {
@@ -145,6 +165,7 @@ export default function ResumeSoftware() {
             }
         }
     }
+
 
     return (
         <section className="relative w-full min-h-screen overflow-hidden" id="resume" ref={sectionRef}>
@@ -424,49 +445,49 @@ export default function ResumeSoftware() {
                             {/* Page Controls */}
                             <motion.div
                                 className="absolute bottom-0 left-0 right-0 bg-gray-100 dark:bg-gray-700 p-2 flex justify-between items-center"
-                                initial={{ y: 20, opacity: 0 }}
+                                initial={{ y: hasMouse ? 20 : 0, opacity: hasMouse ? 0 : 1 }}
                                 animate={{
-                                    y: isHoveringPdf ? 0 : 20,
-                                    opacity: isHoveringPdf ? 1 : 0.8
+                                    y: hasMouse ? (isHoveringPdf ? 0 : 20) : 0,
+                                    opacity: hasMouse ? (isHoveringPdf ? 1 : 0.8) : 1
                                 }}
                                 transition={{ type: "spring", stiffness: 300 }}
                             >
-                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                                <motion.div whileHover={hasMouse ? { scale: 1.1 } : {}} whileTap={{ scale: 0.9 }}>
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        disabled={pageNumber >= (numPages || 1)}
+                                        disabled={pageNumber <= 1}
                                         onClick={() => {
-                                            setPageNumber(prev => prev + 1)
+                                            setPageNumber((prev) => Math.max(prev - 1, 1));
                                             controls.start({
                                                 scale: [1, 1.1, 1],
                                                 transition: { duration: 0.3 }
-                                            })
+                                            });
                                         }}
                                         className="font-[Roboto Mono] text-xs"
                                     >
-                                    Previous
-                                </Button>
+                                        Previous
+                                    </Button>
                                 </motion.div>
+
                                 <motion.span
                                     className="text-sm text-gray-600 dark:text-gray-300"
-                                    animate={{
-                                        scale: isHoveringPdf ? 1.1 : 1
-                                    }}
+                                    animate={{ scale: hasMouse && isHoveringPdf ? 1.1 : 1 }}
                                 >
                                     Page {pageNumber} of {numPages || '--'}
                                 </motion.span>
-                                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+
+                                <motion.div whileHover={hasMouse ? { scale: 1.1 } : {}} whileTap={{ scale: 0.9 }}>
                                     <Button
                                         variant="ghost"
                                         size="sm"
                                         disabled={pageNumber >= (numPages || 1)}
                                         onClick={() => {
-                                            setPageNumber(prev => prev + 1)
+                                            setPageNumber((prev) => Math.min(prev + 1, numPages || 1));
                                             controls.start({
                                                 scale: [1, 1.1, 1],
                                                 transition: { duration: 0.3 }
-                                            })
+                                            });
                                         }}
                                         className="font-[Roboto Mono] text-xs"
                                     >
@@ -474,6 +495,7 @@ export default function ResumeSoftware() {
                                     </Button>
                                 </motion.div>
                             </motion.div>
+
                         </motion.div>
                     </motion.section>
                 </div>
