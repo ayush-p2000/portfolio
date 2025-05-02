@@ -14,7 +14,7 @@ const TypingIntro = () => {
             const timeout = setTimeout(() => {
                 setDisplayedText((prev) => prev + fullText[index]);
                 setIndex((prev) => prev + 1);
-            }, 15); // fast typing speed
+            }, 10); // fast typing speed
             return () => clearTimeout(timeout);
         }
     }, [index, fullText]);
