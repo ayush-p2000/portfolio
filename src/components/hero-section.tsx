@@ -14,7 +14,7 @@ import { ParallaxProvider, useParallax } from 'react-scroll-parallax';
 
 const HeroSection = () => {
     // Scroll parallax for background
-    const { ref: parallaxRef } = useParallax({ speed: -20 });
+    const { ref: parallaxRef } = useParallax({ speed: -5 });
 
     // Cursor parallax effects
     const cursorX = useMotionValue(0);
