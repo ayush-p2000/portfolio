@@ -277,11 +277,11 @@ export default function ExperienceSection() {
             period: "07/2022 - 08/2023",
             location: "Coimbatore, India",
             description: [
-                "Monitored and maintained MSSQL servers, ensuring 99.9% uptime.",
-                "Reduced system response time by 20% through performance tuning.",
-                "Resolved an average of 30 client issues per week with a 95% satisfaction rate.",
-                "Implemented automated monitoring scripts that reduced manual checks by 40%.",
-                "Collaborated with cross-functional teams to troubleshoot complex database issues."
+                "Managed SQL databases (MSSQL and Oracle) on RedHat Linux systems, ensuring data integrity and high performance.",
+                "Developed Python scripts for automating data extraction and transformation, improving efficiency by 35%.",
+                "Resolved client issues via ServiceNow and improved ticket assignment processes.",
+                "Implemented CI/CD pipelines and automated unit tests to enhance deployment reliability.",
+                "Collaborated in Agile teams using Jira and Scrum, contributing to timely project delivery."
             ],
             color: "#3b82f6"
         },
