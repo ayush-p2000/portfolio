@@ -70,11 +70,7 @@ const ContactForm: () => JSX.Element = () => {
     };
 
     const handleMapClick = () => {
-        // Ensure this URL is correct for opening Google Maps
-        // A typical link would look like: https://www.google.com/maps/search/?api=1&query=21+Henry+Street+Sheffield+United+Kingdom
-        // Let's construct a proper map link based on the address provided
-        const address = encodeURIComponent('21 Henry Street, Sheffield, United Kingdom');
-        window.open(`https://www.google.com/maps/search/?api=1&query=${address}`, '_blank');
+        window.open(`https://www.google.com/maps/place/Setiawangsa,+54200+Kuala+Lumpur,+Federal+Territory+of+Kuala+Lumpur/@3.1852513,101.7258639,14z/data=!3m1!4b1!4m6!3m5!1s0x31cc3786ad4a98bf:0x460f2a8f1d6077f5!8m2!3d3.1830052!4d101.74618!16zL20vMGQwX3Jj?entry=ttu&g_ep=EgoyMDI2MDIxOC4wIKXMDSoASAFQAw%3D%3D`, '_blank');
     };
 
 
@@ -258,7 +254,7 @@ const ContactForm: () => JSX.Element = () => {
                                     className="inline-block"
                                     whileHover={{ scale: 1.02 }}
                                 >
-                                    21 Henry Street, Sheffield, United Kingdom
+                                    Setiawangsa, Kuala Lumpur, Malaysia - 54200
                                 </motion.span>
                             </motion.p>
 
@@ -343,7 +339,7 @@ const ContactForm: () => JSX.Element = () => {
                             {/* The iframe src should be replaced with a static image or just remove it if you only rely on the click */}
                             {/* For a functional embed, you'd use Google Maps Embed API or similar */}
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2382.3949946051265!2d-1.471508123471272!3d53.38211607226141!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4879785171421a6d%3A0x3600836171355c0!2sSheffield%2C%20UK!5e0!3m2!1sen!2sus!4v1714360279212!5m2!1sen!2sus" // Using about:blank to show nothing, as click handles navigation
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15935.132800000001!2d101.746!3d3.183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc3786ad4a98bf%3A0x460f2a8f1d6077f5!2sSetiawangsa%2C%2054200%20Kuala%20Lumpur!5e0!3m2!1sen!2smy!4v1714360279212!5m2!1sen!2smy"
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0 }}

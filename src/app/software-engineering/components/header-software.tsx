@@ -5,8 +5,10 @@ import { SmoothScrollLink } from '@/components/smooth-scroll-link';
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
 import { Menu, X } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ModeToggle } from "@/components/mode-toggle";
+import { useActiveSection } from '@/hooks/use-active-section';
+import { motion } from 'framer-motion';
 
 const menuItems = [
     { name: 'Home', href: '#home', section: 'home' },
@@ -18,33 +20,10 @@ const menuItems = [
 
 export const SoftwareHeader = () => {
     const [menuState, setMenuState] = useState(false)
-    const [activeSection, setActiveSection] = useState('home')
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const sections = menuItems.map(item => item.section)
-            const scrollPosition = window.scrollY + 100
-
-            for (const section of sections) {
-                const element = document.getElementById(section)
-                if (element) {
-                    const offsetTop = element.offsetTop
-                    const offsetHeight = element.offsetHeight
-
-                    if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-                        setActiveSection(section)
-                        break
-                    }
-                }
-            }
-        }
-
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+    const { activeSection, manualSetActive } = useActiveSection(menuItems.map(item => item.section));
 
     const handleMenuItemClick = (section: string) => {
-        setActiveSection(section)
+        manualSetActive(section)
         setMenuState(false)
     }
 
@@ -52,11 +31,11 @@ export const SoftwareHeader = () => {
         <header>
             <nav
                 data-state={menuState ? 'active' : 'inactive'}
-                className="bg-background/80 fixed z-20 w-full border-b border-foreground/10 backdrop-blur-3xl transition-all duration-300 ease-in-out"
+                className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
             >
-                <div className="mx-auto max-w-6xl px-6">
-                    <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
-                        <div className="flex w-full items-center justify-between gap-12 lg:w-auto">
+                <div className="mx-auto max-w-6xl px-6 py-4">
+                    <div className="relative flex items-center justify-between gap-6 px-6 py-3 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-2xl rounded-2xl border border-white/20 dark:border-neutral-800/50 shadow-2xl">
+                        <div className="flex items-center gap-12">
                             <Link
                                 href="/"
                                 aria-label="home"
@@ -73,14 +52,12 @@ export const SoftwareHeader = () => {
                                 className="relative z-20 -m-2.5 -mr-4 block cursor-pointer rounded-full p-2.5 transition-colors hover:bg-foreground/10 lg:hidden"
                             >
                                 <Menu
-                                    className={`m-auto size-6 transition-all duration-300 ease-in-out ${
-                                        menuState ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
-                                    }`}
+                                    className={`m-auto size-6 transition-all duration-300 ease-in-out ${menuState ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+                                        }`}
                                 />
                                 <X
-                                    className={`absolute inset-0 m-auto size-6 transition-all duration-300 ease-in-out ${
-                                        menuState ? 'rotate-0 scale-100 opacity-100' : '-rotate-180 scale-0 opacity-0'
-                                    }`}
+                                    className={`absolute inset-0 m-auto size-6 transition-all duration-300 ease-in-out ${menuState ? 'rotate-0 scale-100 opacity-100' : '-rotate-180 scale-0 opacity-0'
+                                        }`}
                                 />
                             </button>
                         </div>
@@ -92,9 +69,9 @@ export const SoftwareHeader = () => {
                 md:flex-nowrap lg:static lg:m-0 lg:flex lg:w-fit
                 lg:gap-6 lg:space-y-0 lg:p-0
                 ${menuState
-                                ? 'scale-100 rotate-0 opacity-100'
-                                : 'scale-0 rotate-45 opacity-0 origin-bottom-right lg:scale-100 lg:rotate-0 lg:opacity-100'
-                            }
+                                    ? 'scale-100 rotate-0 opacity-100'
+                                    : 'scale-0 rotate-45 opacity-0 origin-bottom-right lg:scale-100 lg:rotate-0 lg:opacity-100'
+                                }
               `}
                         >
                             <div className="lg:hidden">
@@ -109,16 +86,18 @@ export const SoftwareHeader = () => {
                                                     <SmoothScrollLink
                                                         href={item.href}
                                                         onClick={() => handleMenuItemClick(item.section)}
-                                                        className={`block transition-all duration-300 ${
-                                                            activeSection === item.section
-                                                                ? 'text-accent-foreground font-medium scale-105'
-                                                                : 'text-muted-foreground hover:text-foreground'
-                                                        }`}
+                                                        className={`block transition-all duration-300 ${activeSection === item.section
+                                                            ? 'text-accent-foreground font-medium scale-105'
+                                                            : 'text-muted-foreground hover:text-foreground'
+                                                            }`}
                                                     >
                                                         <span className="relative">
                                                             {item.name}
                                                             {activeSection === item.section && (
-                                                                <span className="absolute left-0 bottom-0 h-0.5 w-full bg-accent rounded-full"></span>
+                                                                <motion.span
+                                                                    layoutId="software-active-mobile"
+                                                                    className="absolute left-0 bottom-0 h-0.5 w-full bg-accent rounded-full"
+                                                                ></motion.span>
                                                             )}
                                                         </span>
                                                     </SmoothScrollLink>
@@ -136,16 +115,18 @@ export const SoftwareHeader = () => {
                                                 <SmoothScrollLink
                                                     href={item.href}
                                                     onClick={() => handleMenuItemClick(item.section)}
-                                                    className={`relative px-1 py-2 transition-all duration-300 ${
-                                                        activeSection === item.section
-                                                            ? 'text-accent-foreground font-medium'
-                                                            : 'text-muted-foreground hover:text-foreground'
-                                                    }`}
+                                                    className={`relative px-1 py-2 transition-all duration-300 ${activeSection === item.section
+                                                        ? 'text-accent-foreground font-medium'
+                                                        : 'text-muted-foreground hover:text-foreground'
+                                                        }`}
                                                 >
                                                     <span>
                                                         {item.name}
                                                         {activeSection === item.section && (
-                                                            <span className="absolute left-0 bottom-0 h-0.5 w-full bg-accent rounded-full"></span>
+                                                            <motion.span
+                                                                layoutId="software-active-desktop"
+                                                                className="absolute left-0 bottom-0 h-0.5 w-full bg-accent rounded-full"
+                                                            ></motion.span>
                                                         )}
                                                     </span>
                                                 </SmoothScrollLink>

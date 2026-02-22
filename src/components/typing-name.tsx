@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const TypingName = () => {
+export const TypingName = () => {
     const fullText = 'Ayush Prajapati';
     const [displayedText, setDisplayedText] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,29 +20,30 @@ const TypingName = () => {
     return (
         <span
             className="
+        inline-block
         font-mono font-extrabold
         text-5xl sm:text-5xl md:text-5xl lg:text-6xl
         text-transparent bg-clip-text
         bg-gradient-to-r
-        from-emerald-400 via-cyan-400 to-teal-400
-        dark:from-emerald-300 dark:via-cyan-300 dark:to-teal-300
+        from-violet-500 via-fuchsia-500 to-cyan-500
+        dark:from-violet-400 dark:via-fuchsia-400 dark:to-cyan-400
         pr-2
         transition-all duration-300
         select-none
       "
         >
-      {displayedText}
+            {displayedText}
             <span
                 className="
           inline-block w-[2px] h-[1em]
-          bg-cyan-400 dark:bg-cyan-300
+          bg-cyan-500 dark:bg-cyan-400
           animate-pulse ml-1
           hover:scale-150 hover:bg-white hover:dark:bg-gray-100 hover:animate-none
           transition-transform duration-300
         "
             />
-    </span>
+        </span>
     );
 };
 
-export default TypingName;
+

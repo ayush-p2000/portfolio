@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { Button, MotionButton } from '@/components/ui/button'
 import Image from 'next/image'
-import { motion, useAnimation, useInView } from 'framer-motion'
+import { motion, useAnimation, useInView, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
@@ -45,6 +45,8 @@ export default function ResumeSoftware() {
     const [containerWidth, setContainerWidth] = useState(600)
     const [aspectRatio, setAspectRatio] = useState<number | null>(null)
     const [isHoveringPdf, setIsHoveringPdf] = useState(false)
+    const [scale, setScale] = useState(1.0)
+    const [isFullScreen, setIsFullScreen] = useState(false)
     const sectionRef = useRef<HTMLElement>(null)
     const pdfContainerRef = useRef<HTMLDivElement>(null)
     const controls = useAnimation()
@@ -53,7 +55,7 @@ export default function ResumeSoftware() {
     const onDocumentLoadSuccess = useCallback(async ({ numPages }: { numPages: number }) => {
         setNumPages(numPages)
         try {
-            const pdf = await pdfjs.getDocument("/software_engineer.pdf").promise
+            const pdf = await pdfjs.getDocument("/Software_Ayush (2).pdf").promise
             const page = await pdf.getPage(1)
             const viewport = page.getViewport({ scale: 1 })
             setAspectRatio(viewport.height / viewport.width)
@@ -134,43 +136,131 @@ export default function ResumeSoftware() {
     const pdfVariants = {
         normal: {
             scale: 1,
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
         },
         hover: {
-            scale: 1.02,
-            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+            scale: 1.01,
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
             transition: {
-                duration: 0.3,
-                ease: "easeOut"
+                duration: 0.4,
+                ease: [0.23, 1, 0.32, 1]
             }
         }
     }
 
-    const titleVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.8,
-                ease: "easeOut"
-            }
-        },
-        hover: {
-            scale: 1.05,
-            textShadow: "0 0 8px rgba(99, 102, 241, 0.5)",
-            transition: {
-                type: "spring",
-                stiffness: 300
-            }
+
+    const PremiumExpertiseItem: React.FC<{
+        title: string;
+        description: string;
+        color: string;
+        icon: string;
+        index: number;
+    }> = ({ title, description, color, icon, index }) => {
+        const cardRef = useRef<HTMLDivElement>(null);
+        const x = useMotionValue(0);
+        const y = useMotionValue(0);
+
+        const rotateX = useTransform(y, [-100, 100], [10, -10]);
+        const rotateY = useTransform(x, [-100, 100], [-10, 10]);
+
+        const springRotateX = useSpring(rotateX, { stiffness: 300, damping: 30 });
+        const springRotateY = useSpring(rotateY, { stiffness: 300, damping: 30 });
+
+        function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
+            if (!cardRef.current) return;
+            const rect = cardRef.current.getBoundingClientRect();
+            const width = rect.width;
+            const height = rect.height;
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            const xPct = (mouseX / width - 0.5) * 200;
+            const yPct = (mouseY / height - 0.5) * 200;
+            x.set(xPct);
+            y.set(yPct);
         }
-    }
+
+        function handleMouseLeave() {
+            x.set(0);
+            y.set(0);
+        }
+
+        return (
+            <motion.div
+                ref={cardRef}
+                custom={index}
+                variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    visible: (i: number) => ({
+                        opacity: 1,
+                        x: 0,
+                        transition: {
+                            delay: i * 0.1,
+                            duration: 0.5,
+                            ease: "easeOut"
+                        }
+                    })
+                }}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                    perspective: 1000,
+                }}
+                className="w-full"
+            >
+                <motion.div
+                    style={{
+                        rotateX: springRotateX,
+                        rotateY: springRotateY,
+                        transformStyle: "preserve-3d",
+                    }}
+                    className="relative group p-4 rounded-2xl border border-white/10 dark:border-white/5 bg-white/5 dark:bg-white/[0.03] backdrop-blur-md shadow-xl transition-all duration-300 hover:border-blue-500/50 hover:bg-white/10 dark:hover:bg-white/[0.08]"
+                >
+                    <div className="flex items-center gap-4">
+                        {/* Glowing Orb Indicator */}
+                        <div className="relative flex-shrink-0 flex items-center justify-center w-10 h-10">
+                            <motion.div
+                                animate={{
+                                    scale: [1, 1.2, 1],
+                                    opacity: [0.3, 0.6, 0.3],
+                                }}
+                                transition={{
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                }}
+                                className={`absolute inset-0 rounded-full blur-md ${color}`}
+                            />
+                            <div className={`relative w-3 h-3 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.3)] ${color} border border-white/30`} />
+                            <span className="absolute inset-0 flex items-center justify-center text-lg filter drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
+                                {icon}
+                            </span>
+                        </div>
+
+                        <div className="flex flex-col gap-0.5">
+                            <h3 className="text-lg font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                                {title}
+                            </h3>
+                            <p className="text-sm text-neutral-600 dark:text-neutral-400/90 leading-relaxed line-clamp-2">
+                                {description}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Glass Glare Effect */}
+                    <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-br from-white/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </motion.div>
+            </motion.div>
+        );
+    };
 
 
     return (
-        <section className="relative w-full min-h-screen overflow-hidden" id="resume" ref={sectionRef}>
-            {/* Original Background Elements */}
-            <div className="absolute top-0 left-0 right-0 bottom-0 z-[-2] bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 dark:from-indigo-800 dark:via-purple-900 dark:to-blue-900 bg-[length:400%_400%]" />
+        <section className="relative w-full min-h-screen overflow-hidden flex flex-col justify-center pt-40 pb-24 scroll-mt-0" id="resume" ref={sectionRef}>
+            {/* Transparent background to allow unified page background to show */}
+            <div className="absolute inset-0 z-[-1] opacity-50 dark:opacity-20" />
 
             <div className="absolute bottom-0 left-0 right-0 z-[-1] w-full">
                 <div className="w-full h-full">
@@ -195,7 +285,7 @@ export default function ResumeSoftware() {
             </div>
 
             <div className="container mx-auto px-6 pt-24 pb-12 min-h-screen flex flex-col">
-                <div className="flex-grow flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="flex-grow flex flex-col md:flex-row items-start justify-between gap-8">
                     {/* Left Content */}
                     <motion.section
                         className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left"
@@ -211,11 +301,14 @@ export default function ResumeSoftware() {
                     >
                         <div className="w-full">
                             <motion.div
-                                className="text-6xl md:text-5xl lg:text-7xl mb-6 py-5 font-medium font-[Roboto Mono] text-blue-600 dark:text-blue-300"
-                                variants={titleVariants}
-                                whileHover="hover"
+                                className="w-full mb-12"
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
                             >
-                                My Resume
+                                <h2 className="text-5xl md:text-7xl font-black text-neutral-900 dark:text-white tracking-tight">
+                                    My <span className="text-blue-600 dark:text-blue-400 italic">Resume</span>
+                                </h2>
                             </motion.div>
 
                             <motion.div
@@ -255,30 +348,15 @@ export default function ResumeSoftware() {
                                         </span>
                                     </motion.p>
 
-                                    <ul className="space-y-3 pl-5">
+                                    <div className="grid gap-4 mt-8">
                                         {techItems.map((item, i) => (
-                                            <motion.li
+                                            <PremiumExpertiseItem
                                                 key={i}
-                                                className="relative before:absolute before:-left-5 before:top-[0.4em] before:size-2 before:rounded-full"
-                                                custom={i}
-                                                variants={itemVariants}
-                                                initial="hidden"
-                                                animate={controls}
-                                                whileHover="hover"
-                                                style={{
-                                                    // @ts-expect-error -- CSS custom properties not typed
-                                                    "--tw-bg-opacity": 1,
-                                                    "--tw-gradient-from": item.color,
-                                                    "--tw-gradient-to": item.color,
-                                                }}
-
-                                            >
-                                                <span className={`absolute -left-8 text-xl`}>{item.icon}</span>
-                                                <span className="font-semibold text-gray-900 dark:text-white">{item.title}</span> -
-                                                <span className="text-gray-600 dark:text-gray-300"> {item.description}</span>
-                                            </motion.li>
+                                                {...item}
+                                                index={i}
+                                            />
                                         ))}
-                                    </ul>
+                                    </div>
                                 </div>
                             </motion.div>
 
@@ -295,7 +373,7 @@ export default function ResumeSoftware() {
                                     }
                                 }}
                             >
-                                <a href="/software_engineer.pdf" download="Ayush_SoftwareEngineer_Resume.pdf" className="block cursor-pointer" >
+                                <a href="/Software_Ayush (2).pdf" download="Software_Ayush.pdf" className="block cursor-pointer" >
                                     <MotionButton
                                         variant="default"
                                         size="lg"
@@ -320,29 +398,29 @@ export default function ResumeSoftware() {
                                     </MotionButton>
                                 </a>
                                 <Link href={'/contact'}>
-                                <MotionButton
-                                    variant="outline"
-                                    size="lg"
-                                    whileHover={{
-                                        scale: 1.05,
-                                        backgroundColor: "hsl(var(--accent))",
-                                        boxShadow: "0 0 15px rgba(124, 58, 237, 0.5)"
-                                    }}
-                                    whileTap={{
-                                        scale: 0.95,
-                                        boxShadow: "0 0 5px rgba(124, 58, 237, 0.3)"
-                                    }}
-                                    className="font-[Roboto Mono] relative overflow-hidden cursor-pointer"
-                                >
-                                    <motion.span
-                                        className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 opacity-0"
+                                    <MotionButton
+                                        variant="outline"
+                                        size="lg"
                                         whileHover={{
-                                            opacity: 0.2,
-                                            transition: { duration: 0.3 }
+                                            scale: 1.05,
+                                            backgroundColor: "hsl(var(--accent))",
+                                            boxShadow: "0 0 15px rgba(124, 58, 237, 0.5)"
                                         }}
-                                    />
-                                    Contact Me
-                                </MotionButton>
+                                        whileTap={{
+                                            scale: 0.95,
+                                            boxShadow: "0 0 5px rgba(124, 58, 237, 0.3)"
+                                        }}
+                                        className="font-[Roboto Mono] relative overflow-hidden cursor-pointer"
+                                    >
+                                        <motion.span
+                                            className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 opacity-0"
+                                            whileHover={{
+                                                opacity: 0.2,
+                                                transition: { duration: 0.3 }
+                                            }}
+                                        />
+                                        Contact Me
+                                    </MotionButton>
                                 </Link>
                             </motion.div>
                         </div>
@@ -361,7 +439,7 @@ export default function ResumeSoftware() {
                     >
                         <motion.div
                             ref={pdfContainerRef}
-                            className="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700"
+                            className="relative bg-white dark:bg-neutral-900 rounded-3xl shadow-2xl overflow-hidden border border-neutral-200/50 dark:border-neutral-800/50 group"
                             style={pdfStyle}
                             variants={pdfVariants}
                             initial="normal"
@@ -369,133 +447,108 @@ export default function ResumeSoftware() {
                             onHoverStart={() => setIsHoveringPdf(true)}
                             onHoverEnd={() => setIsHoveringPdf(false)}
                         >
+                            {/* Visual Progress Bar */}
+                            <div className="absolute top-0 left-0 right-0 h-1 z-30 bg-neutral-100 dark:bg-neutral-800">
+                                <motion.div
+                                    className="h-full bg-gradient-to-r from-blue-500 to-purple-600 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${(pageNumber / (numPages || 1)) * 100}%` }}
+                                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                                />
+                            </div>
+
                             <Document
-                                file="/software_engineer.pdf"
+                                file="/Software_Ayush (2).pdf"
                                 onLoadSuccess={onDocumentLoadSuccess}
                                 loading={
-                                    <div className="flex items-center justify-center h-full">
-                                        <motion.p
-                                            className="text-gray-500 dark:text-gray-400"
-                                            animate={{
-                                                opacity: [0.6, 1, 0.6],
-                                            }}
-                                            transition={{
-                                                duration: 1.5,
-                                                repeat: Infinity,
-                                            }}
-                                        >
-                                            Loading resume...
-                                        </motion.p>
+                                    <div className="flex flex-col items-center justify-center h-[600px] w-full bg-neutral-50 dark:bg-neutral-950/20 gap-4">
+                                        <div className="w-12 h-12 rounded-full border-4 border-blue-500/20 border-t-blue-500 animate-spin" />
+                                        <p className="text-sm font-medium text-neutral-400 animate-pulse">Initializing Viewer...</p>
                                     </div>
                                 }
                                 error={
-                                    <div className="flex items-center justify-center h-full text-red-500">
-                                        Failed to load resume PDF.
+                                    <div className="flex flex-col items-center justify-center h-[600px] w-full text-red-500 gap-2">
+                                        <span className="text-4xl">⚠️</span>
+                                        <p className="font-medium">Failed to load resume PDF.</p>
                                     </div>
                                 }
                             >
-                                <div className="w-full overflow-auto" style={{ maxHeight: 'calc(80vh - 40px)' }}>
+                                <div className="w-full overflow-auto scrollbar-hide flex justify-center" style={{ maxHeight: 'calc(80vh - 4px)' }}>
                                     {aspectRatio && (
-                                        <div style={{ height: containerWidth * aspectRatio, maxHeight: 'calc(80vh - 40px)' }}>
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.95 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            style={{
+                                                height: containerWidth * aspectRatio * scale,
+                                                maxHeight: 'calc(100% - 4px)',
+                                                transform: `scale(${scale})`,
+                                                transformOrigin: 'top center'
+                                            }}
+                                        >
                                             <Page
                                                 pageNumber={pageNumber}
                                                 width={containerWidth}
-                                                renderTextLayer={false}
-                                                renderAnnotationLayer={false}
+                                                renderTextLayer={true}
+                                                renderAnnotationLayer={true}
                                                 loading={
-                                                    <div className="flex items-center justify-center h-full">
-                                                        <motion.div
-                                                            className="flex space-x-2"
-                                                            animate={{
-                                                                x: [0, 10, 0],
-                                                            }}
-                                                            transition={{
-                                                                duration: 1.5,
-                                                                repeat: Infinity,
-                                                            }}
-                                                        >
-                                                            <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                                                            <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                                                            <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                                                        </motion.div>
-                                                    </div>
+                                                    <div className="w-full bg-neutral-100 dark:bg-neutral-800/50 animate-pulse" style={{ height: containerWidth * aspectRatio }} />
                                                 }
                                             />
-                                        </div>
-                                    )}
-                                    {!aspectRatio && (
-                                        <div className="flex items-center justify-center h-full">
-                                            <motion.p
-                                                className="text-gray-500 dark:text-gray-400"
-                                                animate={{
-                                                    rotate: [0, 5, -5, 0],
-                                                }}
-                                                transition={{
-                                                    duration: 2,
-                                                    repeat: Infinity,
-                                                }}
-                                            >
-                                                Loading PDF info...
-                                            </motion.p>
-                                        </div>
+                                        </motion.div>
                                     )}
                                 </div>
                             </Document>
 
-                            {/* Page Controls */}
-                            <motion.div
-                                className="absolute bottom-0 left-0 right-0 bg-gray-100 dark:bg-gray-700 p-2 flex justify-between items-center"
-                                initial={{ y: hasMouse ? 20 : 0, opacity: hasMouse ? 0 : 1 }}
-                                animate={{
-                                    y: hasMouse ? (isHoveringPdf ? 0 : 20) : 0,
-                                    opacity: hasMouse ? (isHoveringPdf ? 1 : 0.8) : 1
-                                }}
-                                transition={{ type: "spring", stiffness: 300 }}
-                            >
-                                <motion.div whileHover={hasMouse ? { scale: 1.1 } : {}} whileTap={{ scale: 0.9 }}>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        disabled={pageNumber <= 1}
-                                        onClick={() => {
-                                            setPageNumber((prev) => Math.max(prev - 1, 1));
-                                            controls.start({
-                                                scale: [1, 1.1, 1],
-                                                transition: { duration: 0.3 }
-                                            });
-                                        }}
-                                        className="font-[Roboto Mono] text-xs"
+                            {/* Floating Glass Toolbar */}
+                            <AnimatePresence>
+                                {(isHoveringPdf || !hasMouse) && (
+                                    <motion.div
+                                        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 p-1.5 rounded-2xl bg-white/70 dark:bg-neutral-900/80 backdrop-blur-xl border border-white/20 dark:border-neutral-700/50 shadow-2xl z-40"
+                                        initial={{ y: 50, opacity: 0, x: "-50%" }}
+                                        animate={{ y: 0, opacity: 1, x: "-50%" }}
+                                        exit={{ y: 50, opacity: 0, x: "-50%" }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                     >
-                                        Previous
-                                    </Button>
-                                </motion.div>
+                                        <div className="flex items-center gap-1 border-r border-neutral-200 dark:border-neutral-700 pr-1 mr-1">
+                                            <ToolbarButton
+                                                onClick={() => setPageNumber(prev => Math.max(prev - 1, 1))}
+                                                disabled={pageNumber <= 1}
+                                                icon="←"
+                                            />
+                                            <span className="text-[10px] font-bold font-mono px-2 text-neutral-500 w-16 text-center">
+                                                {pageNumber} / {numPages || '--'}
+                                            </span>
+                                            <ToolbarButton
+                                                onClick={() => setPageNumber(prev => Math.min(prev + 1, numPages || 1))}
+                                                disabled={pageNumber >= (numPages || 1)}
+                                                icon="→"
+                                            />
+                                        </div>
 
-                                <motion.span
-                                    className="text-sm text-gray-600 dark:text-gray-300"
-                                    animate={{ scale: hasMouse && isHoveringPdf ? 1.1 : 1 }}
-                                >
-                                    Page {pageNumber} of {numPages || '--'}
-                                </motion.span>
+                                        <div className="flex items-center gap-1">
+                                            <ToolbarButton
+                                                onClick={() => setScale(prev => Math.max(prev - 0.1, 0.5))}
+                                                icon="−"
+                                            />
+                                            <ToolbarButton
+                                                onClick={() => setScale(1.0)}
+                                                text={`${Math.round(scale * 100)}%`}
+                                            />
+                                            <ToolbarButton
+                                                onClick={() => setScale(prev => Math.min(prev + 0.1, 2.0))}
+                                                icon="+"
+                                            />
+                                        </div>
 
-                                <motion.div whileHover={hasMouse ? { scale: 1.1 } : {}} whileTap={{ scale: 0.9 }}>
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        disabled={pageNumber >= (numPages || 1)}
-                                        onClick={() => {
-                                            setPageNumber((prev) => Math.min(prev + 1, numPages || 1));
-                                            controls.start({
-                                                scale: [1, 1.1, 1],
-                                                transition: { duration: 0.3 }
-                                            });
-                                        }}
-                                        className="font-[Roboto Mono] text-xs"
-                                    >
-                                        Next
-                                    </Button>
-                                </motion.div>
-                            </motion.div>
-
+                                        <div className="pl-1 ml-1 border-l border-neutral-200 dark:border-neutral-700">
+                                            <ToolbarButton
+                                                onClick={() => window.open("/Software_Ayush (2).pdf", "_blank")}
+                                                icon="↗"
+                                            />
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </motion.div>
                     </motion.section>
                 </div>
@@ -503,3 +556,21 @@ export default function ResumeSoftware() {
         </section>
     )
 }
+
+const ToolbarButton: React.FC<{
+    onClick: () => void;
+    disabled?: boolean;
+    icon?: string;
+    text?: string;
+}> = ({ onClick, disabled, icon, text }) => (
+    <motion.button
+        onClick={onClick}
+        disabled={disabled}
+        whileHover={{ scale: 1.1, backgroundColor: "rgba(59, 130, 246, 0.1)" }}
+        whileTap={{ scale: 0.9 }}
+        className={`flex items-center justify-center min-w-[32px] h-8 px-2 rounded-xl transition-colors ${disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer hover:text-blue-500'}`}
+    >
+        {icon && <span className="text-lg leading-none">{icon}</span>}
+        {text && <span className="text-[10px] font-bold font-mono">{text}</span>}
+    </motion.button>
+);

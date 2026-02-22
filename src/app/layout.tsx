@@ -45,26 +45,27 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+    children,
+}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-        <body
-            className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${roboto.variable} ${inter.variable} antialiased min-h-screen flex flex-col`}
-        >
-        <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-        >
-            <main className="flex-grow">
-                {children}
-            </main>
-            <Footer />
-        </ThemeProvider>
-        </body>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} ${orbitron.variable} ${roboto.variable} ${inter.variable} antialiased min-h-screen flex flex-col`}
+            >
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                >
+
+                    <main className="flex-grow">
+                        {children}
+                    </main>
+                    <Footer />
+                </ThemeProvider>
+            </body>
         </html>
     );
 }

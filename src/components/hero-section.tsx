@@ -2,249 +2,276 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { HeroHeader } from '@/components/hero8-header'; // Assuming this component exists
-import { InfiniteSlider } from '@/components/ui/infinite-slider'; // Assuming this component exists
-import { ProgressiveBlur } from '@/components/ui/progressive-blur'; // Assuming this component exists
-import TypingName from '@/components/TypingName'; // Assuming this component exists
-import TypingIntro from '@/components/TypingIntro'; // Assuming this component exists
-import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { ParallaxProvider, useParallax } from 'react-scroll-parallax'; // Using react-scroll-parallax
+import { Button } from '@/components/ui/button';
+import { HeroHeader } from '@/components/hero8-header';
+import { InfiniteSlider } from '@/components/ui/infinite-slider';
+import { ProgressiveBlur } from '@/components/ui/progressive-blur';
 
-// Main Hero Section Component
+import { SparklesCore } from "@/components/ui/sparkles";
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { ParallaxProvider } from 'react-scroll-parallax';
+import { useTheme } from 'next-themes';
+import { FiCode, FiDatabase } from 'react-icons/fi';
+
+// --- Tech Stack Data ---
+const techLogos = [
+    { src: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", alt: "React Logo" },
+    { src: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Nextjs-logo.svg", alt: "Next.js Logo", invert: true },
+    { src: "https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg", alt: "GitHub Logo", invert: true },
+    { src: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg", alt: "Node.js Logo" },
+    { src: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg", alt: "Tailwind CSS Logo" },
+    { src: "/ts-logo.png", alt: "TypeScript Logo" },
+    { src: "https://upload.wikimedia.org/wikipedia/commons/0/03/Git_format.png", alt: "Git Logo", invert: true },
+    { src: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Vercel_logo_2025.svg", alt: "Vercel Logo", invert: true },
+    { src: "/clnpng.png", alt: "CleanPNG Logo" },
+    { src: "/pngtree.jpg", alt: "PNGTree Logo" },
+    { src: "/shadcn.png", alt: "Shadcn Logo", invert: true },
+    { src: "/redux.png", alt: "Redux Logo" }
+];
+
 const HeroSection = () => {
-    // State to determine if the device is touch-enabled
+    const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-    // --- Scroll Parallax for Background ---
-    // This effect works by linking element position to scroll position.
-    // It should work correctly on touch devices via standard scrolling.
-    const { ref: parallaxRef } = useParallax({ speed: -5 }); // Adjust speed as needed
-
-    // --- Cursor Parallax for Foreground Image ---
-    // These motion values and transforms will track cursor position
-    // and create a subtle parallax effect on the foreground elements.
-    // This effect is DISABLED on touch devices in the useEffect below.
-    const cursorX = useMotionValue(0);
-    const cursorY = useMotionValue(0);
-    // Map cursor position range (-100 to 100) to element offset range (-15 to 15)
-    const xOffset = useTransform(cursorX, [-100, 100], [-15, 15]);
-    const yOffset = useTransform(cursorY, [-100, 100], [-15, 15]);
-
-    // --- Effect to Detect Touch Device ---
-    // Runs once on mount to check for touch capabilities.
     useEffect(() => {
-        // Simple heuristic for touch detection
-        const hasTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
-        setIsTouchDevice(hasTouch);
-    }, []); // Empty dependency array means this runs only once on mount
+        setMounted(true);
+    }, []);
 
-    // --- Effect for Mousemove Listener ---
-    // Adds the mousemove listener ONLY if it's NOT a touch device.
-    // Updates cursorX and cursorY MotionValues.
+    // --- 3D Tilt & Mouse Tracking Logic ---
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    // Smooth spring physics for fluid movement
+    const mouseX = useSpring(x, { stiffness: 50, damping: 15 });
+    const mouseY = useSpring(y, { stiffness: 50, damping: 15 });
+
+    // Calculate rotation based on mouse position
+    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["7deg", "-7deg"]);
+    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+    // Calculate spotlight effect position
+    const spotlightX = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"]);
+    const spotlightY = useTransform(mouseY, [-0.5, 0.5], ["0%", "100%"]);
+
     useEffect(() => {
-        // If it's a touch device, don't add the mousemove listener
-        if (isTouchDevice) {
-            return; // Cleanup (no listener to remove if never added)
-        }
-
-        const handleMouseMove = (e: MouseEvent) => {
-            // Calculate position relative to the center of the viewport
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            // Update MotionValues based on mouse offset from center
-            // Divided by 25 to reduce sensitivity
-            cursorX.set((e.clientX - centerX) / 25);
-            cursorY.set((e.clientY - centerY) / 25);
+        const checkTouch = () => {
+            setIsTouchDevice(typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
         };
+        checkTouch();
+        window.addEventListener('resize', checkTouch);
+        return () => window.removeEventListener('resize', checkTouch);
+    }, []);
 
-        // Add the event listener
-        window.addEventListener('mousemove', handleMouseMove);
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (isTouchDevice) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseXFromCenter = e.clientX - rect.left - width / 2;
+        const mouseYFromCenter = e.clientY - rect.top - height / 2;
 
-        // Cleanup function: Remove the event listener when the component unmounts
-        return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, [isTouchDevice, cursorX, cursorY]); // Re-run if isTouchDevice or motion values change
-
-    // --- Framer Motion Animation Variants ---
-    // Defines how elements will appear
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                delayChildren: 0.2, // Delay before animating children
-                staggerChildren: 0.3 // Stagger the animation of children
-            }
-        }
+        x.set(mouseXFromCenter / width);
+        y.set(mouseYFromCenter / height);
     };
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 50 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 0.7,
-                ease: "easeOut" // Smooth easing
-            }
-        }
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
     };
 
-    const imageVariants = {
-        hidden: { opacity: 0, scale: 0.9, filter: "blur(10px)" },
-        visible: {
-            opacity: 1,
-            scale: 1,
-            filter: "blur(0px)",
-            transition: {
-                duration: 1.2, // Longer duration for image
-                ease: "easeOut"
-            }
-        }
-    };
-
-    // --- Data for Tech Stack Slider ---
-    const techLogos = [
-        { src: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg", alt: "React Logo" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Nextjs-logo.svg", alt: "Next.js Logo", invert: true },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg", alt: "GitHub Logo", invert: true },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg", alt: "Node.js Logo" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg", alt: "Tailwind CSS Logo" },
-        { src: "/ts-logo.png", alt: "TypeScript Logo" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/0/03/Git_format.png", alt: "Git Logo", invert: true },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Vercel_logo_2025.svg", alt: "Vercel Logo", invert: true },
-        { src: "/clnpng.png", alt: "CleanPNG Logo" },
-        { src: "/pngtree.jpg", alt: "PNGTree Logo" },
-        { src: "/shadcn.png", alt: "Shadcn Logo", invert: true },
-        { src: "/redux.png", alt: "Redux Logo" }
-    ];
-
-    // --- Rendered JSX ---
     return (
-        <div className="relative overflow-x-hidden min-h-screen bg-gray-200 dark:bg-transparent">
-            {/* --- Background Image with Scroll Parallax --- */}
-            {/* This fixed element covers the viewport and moves with scroll */}
-            <div className="fixed inset-0 -z-10">
-                {/* Apply parallax ref here */}
-                <div
-                    ref={parallaxRef as React.RefObject<HTMLDivElement>}
-                    className="hidden dark:block fixed inset-0 h-[150vh]" // Use h-[150vh] or similar to allow for movement
-                >
-                    <Image
-                        src="/hero-bg.jpg"
-                        alt="Background"
-                        fill
-                        className="object-cover"
-                        priority
-                        quality={80}
-                        // Optional: Use hardware acceleration
-                        style={{
-                            transform: 'translateZ(0)',
-                            willChange: 'transform'
-                        }}
+        <div className="relative w-full min-h-screen overflow-x-hidden bg-white dark:bg-neutral-950 text-gray-900 dark:text-white selection:bg-cyan-500/30 transition-colors duration-300">
+            {/* --- Background Particles --- */}
+            <div className="fixed inset-0 w-full h-full -z-10 pointer-events-none">
+                {mounted && (
+                    <SparklesCore
+                        id="tsparticles"
+                        background="transparent"
+                        minSize={0.6}
+                        maxSize={1.4}
+                        particleDensity={100}
+                        className="w-full h-full"
+                        particleColor={theme === 'dark' ? "#FFFFFF" : "#000000"}
                     />
-                </div>
+                )}
             </div>
 
-            {/* --- Hero Header (assuming it's a separate component) --- */}
+            {/* --- Ambient Gradient Background --- */}
+            <div className="fixed inset-0 -z-20 bg-[radial-gradient(circle_at_50%_50%,_rgba(124,58,237,0.05),_rgba(255,255,255,1))] dark:bg-[radial-gradient(circle_at_50%_50%,_rgba(76,29,149,0.1),_rgba(15,23,42,0))]" />
+
             <HeroHeader />
 
-            {/* --- Main Content Section --- */}
-            <section className="relative z-10 py-12 md:py-24 lg:py-32">
-                {/* Motion div for animating the main content block */}
+            <section
+                className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] py-12 md:py-20 perspective-1000"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+            >
+                {/* --- 3D Glass Card Container --- */}
                 <motion.div
-                    className="mx-auto flex max-w-4xl flex-col items-center px-6 text-center"
-                    initial="hidden" // Start from hidden state
-                    animate="visible" // Animate to visible state
-                    variants={containerVariants} // Use defined variants
+                    style={{
+                        rotateX: isTouchDevice ? 0 : rotateX,
+                        rotateY: isTouchDevice ? 0 : rotateY,
+                        transformStyle: "preserve-3d",
+                    }}
+                    className="relative w-[90%] max-w-6xl mx-auto p-8 rounded-3xl bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-sm transition-transform duration-200"
                 >
-                    {/* Text Content */}
-                    <motion.div variants={itemVariants} className="max-w-2xl">
-                        <h1 className="mt-8 text-balance text-5xl font-medium md:text-6xl lg:mt-16 xl:text-7xl">
-                            Hi! I am <br />
-                            {/* Typing animation for name */}
-                            <TypingName />
-                        </h1>
-                        {/* Typing animation for intro */}
-                        <TypingIntro />
-                        {/* Action Buttons */}
-                        <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                            <Button asChild size="lg" className="px-6 py-3 text-base">
-                                <Link href="/software-engineering">Software Engineering</Link>
-                            </Button>
-                            <Button asChild size="lg" variant="ghost" className="px-6 py-3 text-base">
-                                <Link href="/data-scientist">Data Scientist</Link>
-                            </Button>
-                        </div>
-                    </motion.div>
-
-                    {/* --- Hero Image with Conditional Cursor Parallax --- */}
-                    <div className="relative mt-16 w-full max-w-3xl mx-auto">
-                        {/* Purple Backlight with parallax - Hidden in light mode */}
-                        {/* Apply framer-motion style ONLY if NOT a touch device */}
+                    {/* Spotlight Effect Overlay */}
+                    {!isTouchDevice && (
                         <motion.div
-                            className="absolute inset-0 -z-20 opacity-0 dark:opacity-100 transition-opacity duration-300"
-                            style={isTouchDevice ? {} : { // Conditional style application
-                                background: 'radial-gradient(circle at center, rgba(168, 85, 247, 0.2) 80%, transparent 70%)',
-                                filter: 'blur(80px)',
-                                x: xOffset, // framer-motion x transform
-                                y: yOffset  // framer-motion y transform
+                            className="absolute inset-0 rounded-3xl z-0 pointer-events-none opacity-50"
+                            style={{
+                                background: useTransform(
+                                    [spotlightX, spotlightY],
+                                    ([sx, sy]) => `radial-gradient(600px circle at ${sx} ${sy}, rgba(124, 58, 237, 0.15), transparent 40%)`
+                                )
                             }}
                         />
+                    )}
 
-                        {/* Hero Image */}
-                        {/* Apply framer-motion variants and conditional style */}
+                    <div className="relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                        {/* --- Left Content: Text --- */}
                         <motion.div
-                            variants={imageVariants} // Entrance animation variants
-                            className="relative z-10"
-                            style={isTouchDevice ? {} : { // Conditional style application
-                                x: xOffset, // framer-motion x transform
-                                y: yOffset  // framer-motion y transform
-                            }}
+                            className="flex-1 text-center lg:text-left space-y-8"
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            <Image
-                                className="w-full h-auto object-contain dark:mix-blend-lighten"
-                                src="/hero.png"
-                                alt="Abstract Object"
-                                width={1000} // Provide base width/height for aspect ratio
-                                height={800}
-                                priority // High priority image
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1000px" // Optimize image loading
-                            />
+                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-gray-900 via-gray-700 to-gray-500 dark:from-white dark:via-gray-200 dark:to-gray-500">
+                                Hi! I am <br />
+                                <motion.div
+                                    className="mt-2 min-h-[5rem] md:min-h-[6rem] h-auto leading-none"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+                                >
+                                    <span className="inline-block font-mono font-extrabold text-5xl sm:text-5xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-500 dark:from-violet-400 dark:via-fuchsia-400 dark:to-cyan-400 pr-2">
+                                        Ayush Prajapati
+                                    </span>
+                                </motion.div>
+                            </h1>
+
+                            <motion.div
+                                className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-2xl mx-auto lg:mx-0"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+                            >
+                                <p>
+                                    I'm an AI-Driven Software Engineer passionate about building intelligent, scalable systems. I blend full-stack expertise with data science to solve complex, real-world problems. Explore my work and let's build the future together!
+                                </p>
+                            </motion.div>
+
+                            <motion.div
+                                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: 1.0 }}
+                            >
+                                <Button
+                                    size="lg"
+                                    className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white border-0 shadow-lg shadow-violet-500/25 transition-all hover:scale-105"
+                                    onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                                >
+                                    Explore My Work
+                                </Button>
+                                <Button
+                                    asChild
+                                    size="lg"
+                                    variant="outline"
+                                    className="border-gray-300 dark:border-white/20 bg-white/50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 text-gray-900 dark:text-white backdrop-blur-md transition-all hover:scale-105"
+                                >
+                                    <Link href="/contact">Get in Touch</Link>
+                                </Button>
+                            </motion.div>
+
+                            {/* --- Specialized Portfolio Links --- */}
+                            <motion.div
+                                className="flex flex-col gap-4 pt-8 border-t border-gray-200 dark:border-white/10 mt-8"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: 1.2 }}
+                            >
+                                <div className="flex flex-col items-center lg:items-start gap-3">
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400 ml-1">
+                                        Explore Deep Dives
+                                    </span>
+                                    <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+                                        <Button
+                                            asChild
+                                            variant="outline"
+                                            className="h-11 border-gray-200 dark:border-white/10 bg-white/30 dark:bg-white/5 hover:bg-violet-500/5 dark:hover:bg-violet-500/10 text-gray-700 dark:text-gray-300 backdrop-blur-md transition-all group px-5 rounded-xl border-dashed hover:border-solid hover:border-violet-500/50"
+                                        >
+                                            <Link href="/software-engineering" className="flex items-center gap-2">
+                                                <FiCode className="text-violet-500 dark:text-violet-400 group-hover:scale-110 transition-transform" />
+                                                <span className="text-sm font-semibold">Software Engineering</span>
+                                            </Link>
+                                        </Button>
+                                        <Button
+                                            asChild
+                                            variant="outline"
+                                            className="h-11 border-gray-200 dark:border-white/10 bg-white/30 dark:bg-white/5 hover:bg-cyan-500/5 dark:hover:bg-cyan-500/10 text-gray-700 dark:text-gray-300 backdrop-blur-md transition-all group px-5 rounded-xl border-dashed hover:border-solid hover:border-cyan-500/50"
+                                        >
+                                            <Link href="/data-scientist" className="flex items-center gap-2">
+                                                <FiDatabase className="text-cyan-500 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
+                                                <span className="text-sm font-semibold">Data Scientist</span>
+                                            </Link>
+                                        </Button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+
+                        {/* --- Right Content: Image --- */}
+                        <motion.div
+                            className="flex-1 w-full max-w-lg lg:max-w-xl relative group"
+                            initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            style={{ transformStyle: "preserve-3d", transform: "translateZ(50px)" }}
+                        >
+                            {/* Glowing backdrop behind image */}
+                            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/30 via-purple-500/30 to-pink-500/30 blur-[60px] rounded-full opacity-60 animate-pulse-slow" />
+
+                            <div className="relative transform transition-transform duration-500 hover:scale-105">
+                                <Image
+                                    src="/hero.png"
+                                    alt="Hero Illustration"
+                                    width={800}
+                                    height={800}
+                                    className="w-full h-auto drop-shadow-2xl"
+                                    priority
+                                />
+                            </div>
                         </motion.div>
                     </div>
                 </motion.div>
             </section>
 
-            {/* --- Tech Stack Section --- */}
-            <section className="bg-gray-200/80 dark:bg-transparent/100 py-16 md:py-24 relative z-10">
-                <div className="m-auto max-w-6xl px-6">
-                    <div className="flex flex-col items-center md:flex-row">
-                        <div className="md:max-w-44 md:border-r md:pr-6 text-center md:text-end mb-6 md:mb-0">
-                            <p className="text-sm">Built with the best <br />Tech Stack</p>
-                        </div>
-                        <div className="relative py-6 md:w-[calc(100%-11rem)] w-full">
-                            {/* Infinite auto-scrolling slider */}
-                            <InfiniteSlider speedOnHover={20} speed={200} gap={112}>
-                                {techLogos.map((logo, index) => (
-                                    <div key={index} className="flex">
-                                        <Image
-                                            className={`mx-auto h-10 w-fit bg-transparent ${logo.invert ? 'dark:invert' : ''}`}
-                                            src={logo.src}
-                                            alt={logo.alt}
-                                            height={40}
-                                            width={40}
-                                        />
-                                    </div>
-                                ))}
-                            </InfiniteSlider>
-                            {/* Blurs at the edges of the slider */}
-                            <ProgressiveBlur direction="left" blurIntensity={1} />
-                            <ProgressiveBlur direction="right" blurIntensity={1} />
-                        </div>
+            {/* --- Tech Stack Marquee --- */}
+            <section className="relative z-10 border-t border-gray-200 dark:border-white/10 bg-white/40 dark:bg-black/40 backdrop-blur-lg py-12">
+                <div className="max-w-7xl mx-auto px-6 flex flex-col items-center md:flex-row gap-8">
+                    <div className="md:w-48 text-center md:text-right font-medium text-gray-600 dark:text-gray-400">
+                        <p>Powering Next-Gen<br />Experiences with</p>
+                    </div>
+                    <div className="flex-1 w-full relative overflow-hidden mask-linear-gradient">
+                        <InfiniteSlider speedOnHover={20} speed={40} gap={60}>
+                            {techLogos.map((logo, index) => (
+                                <div key={index} className="flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110 dark:invert-0">
+                                    <Image
+                                        className={`h-10 w-auto object-contain ${logo.invert ? 'dark:invert invert-0' : ''}`}
+                                        src={logo.src}
+                                        alt={logo.alt}
+                                        height={40}
+                                        width={100}
+                                    />
+                                </div>
+                            ))}
+                        </InfiniteSlider>
+                        {/* Fade edges */}
+                        <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white via-white/80 dark:from-black dark:via-black/80 to-transparent z-10" />
+                        <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white via-white/80 dark:from-black dark:via-black/80 to-transparent z-10" />
                     </div>
                 </div>
             </section>
@@ -252,7 +279,6 @@ const HeroSection = () => {
     );
 };
 
-// Wrapper to provide ParallaxProvider context
 export default function ParallaxHero() {
     return (
         <ParallaxProvider>

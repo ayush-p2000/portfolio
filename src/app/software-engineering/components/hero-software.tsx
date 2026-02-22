@@ -43,7 +43,10 @@ const HeroSoftware: React.FC = () => {
     // --- Hooks Setup ---
     const isMobile = useIsTouchDevice();
     const [isVisible, setIsVisible] = useState<boolean>(false);
+    const [mounted, setMounted] = useState<boolean>(false);
     const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
+    const [particles, setParticles] = useState<any[]>([]);
+    const [imageParticles, setImageParticles] = useState<any[]>([]);
     const sectionRef = useRef<HTMLElement>(null);
 
     // Animation Controls (for non-transform or sequenced animations)
@@ -67,6 +70,30 @@ const HeroSoftware: React.FC = () => {
     ];
 
     // --- Effects ---
+
+    useEffect(() => {
+        setMounted(true);
+
+        // Pre-calculate particles to avoid Math.random() in render phase
+        const newParticles = [...Array(10)].map(() => ({
+            x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
+            y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
+            opacity: Math.random() * 0.4 + 0.2,
+            scale: Math.random() * 0.6 + 0.2,
+            drift: Math.random() * 150 + 80,
+            duration: Math.random() * 10 + 15,
+            delay: Math.random() * 7
+        }));
+        setParticles(newParticles);
+
+        const newImageParticles = [...Array(8)].map(() => ({
+            x: `${Math.random() * 100}%`,
+            y: `${Math.random() * 100}%`,
+            duration: 2.5 + Math.random() * 2.5,
+            delay: Math.random() * 6
+        }));
+        setImageParticles(newImageParticles);
+    }, []);
 
     // Effect for Mouse Movement Listener (Desktop only)
     useEffect(() => {
@@ -173,13 +200,15 @@ const HeroSoftware: React.FC = () => {
 
 
     // --- Helper Functions ---
-    const scrollToNextSection = (): void => {
-        if (typeof window !== 'undefined') {
-            window.scrollBy({
-                top: window.innerHeight - 50, // Adjust offset as needed
-                behavior: 'smooth'
-            });
+    const handleScroll = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+    };
+
+    const scrollToNextSection = (): void => {
+        handleScroll('resume');
     };
 
     // --- Animation Variants ---
@@ -205,50 +234,29 @@ const HeroSoftware: React.FC = () => {
             <section
                 id='home'
                 ref={sectionRef}
-                className="relative w-full min-h-screen overflow-hidden flex flex-col justify-center"
+                className="relative w-full min-h-screen overflow-hidden flex flex-col justify-center scroll-mt-0 pt-32 pb-24"
             >
                 {/* 1. Background Elements */}
                 {/* Animated Gradient */}
                 <motion.div
-                    className="absolute inset-0 z-[-2] bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 dark:from-indigo-900 dark:via-purple-900 dark:to-blue-950 bg-[length:400%_400%]"
+                    className="absolute inset-0 z-[-2] pointer-events-none"
                     initial={{ opacity: 0 }}
-                    animate={backgroundControls} // Controlled by sequence effect
-                    transition={{ // CSS animation handled separately below for potentially better perf
-                        duration: isMobile ? 40 : 20,
-                        repeat: Infinity,
-                        repeatType: 'reverse',
-                        ease: 'linear'
-                    }}
-                    style={{ // Use CSS animation for the gradient movement
-                        backgroundPosition: '0% 0%', // Start position
-                        animation: `gradientAnim ${isMobile ? 40 : 20}s ease infinite alternate`
-                    }}
+                    animate={backgroundControls}
                 >
-                    <style>{`
-                       @keyframes gradientAnim {
-                           0% { background-position: 0% 0%; }
-                           100% { background-position: 100% 100%; }
-                       }
-                   `}</style>
-                    {/* Orbs (Desktop Only) */}
-                    {!isMobile && (
-                        <>
-                            <motion.div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-400/20 dark:bg-blue-500/20 blur-3xl pointer-events-none" animate={{ x: [0, 50, 0], y: [0, 30, 0], scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 15, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }} />
-                            <motion.div className="absolute bottom-1/3 right-1/4 w-72 h-72 rounded-full bg-purple-400/20 dark:bg-purple-500/20 blur-3xl pointer-events-none" animate={{ x: [0, -40, 0], y: [0, 40, 0], scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 18, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut', delay: 1 }} />
-                        </>
-                    )}
+                    {/* Atmospheric orbs */}
+                    <div className="absolute top-0 left-0 w-full h-full dark:bg-[#020617] bg-white opacity-50" />
                 </motion.div>
 
                 {/* Particles (Desktop Only & Reduced) */}
-                {!isMobile && (
+                {mounted && !isMobile && (
                     <div className="absolute inset-0 z-[-1] opacity-50 pointer-events-none">
-                        {[...Array(10)].map((_, index) => (
+                        {particles.map((p, index) => (
                             <motion.div
                                 key={index}
                                 className="absolute w-1.5 h-1.5 rounded-full bg-blue-400 dark:bg-blue-300"
-                                initial={{ x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000), y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800), opacity: Math.random() * 0.4 + 0.2, scale: Math.random() * 0.6 + 0.2 }}
-                                animate={{ y: [null, `-${Math.random() * 150 + 80}px`], opacity: [null, 0] }}
-                                transition={{ duration: Math.random() * 10 + 15, repeat: Infinity, ease: 'linear', delay: Math.random() * 7 }}
+                                initial={{ x: p.x, y: p.y, opacity: p.opacity, scale: p.scale }}
+                                animate={{ y: [null, `-${p.drift}px`], opacity: [null, 0] }}
+                                transition={{ duration: p.duration, repeat: Infinity, ease: 'linear', delay: p.delay }}
                             />
                         ))}
                     </div>
@@ -275,21 +283,47 @@ const HeroSoftware: React.FC = () => {
 
                         {/* 2a. Left Content Block */}
                         <section className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
-                            {/* Title */}
-                            <motion.div
-                                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 sm:mb-6 font-medium font-[Roboto Mono] text-blue-600 dark:text-blue-300"
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={titleControls}
-                                whileHover={!isMobile ? { textShadow: "0px 0px 8px rgba(59, 130, 246, 0.5)", transition: { duration: 0.2 } } : {}}
+                            {/* CLEAN HERO TITLE */}
+                            <motion.h1
+                                className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter text-gray-900 dark:text-white leading-[1.1]"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
                             >
-                                <AnimatePresence>
-                                    {"Software Engineer".split('').map((char, index) => (
-                                        <motion.span key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.05 * index + 0.5 }} className="inline-block">
+                                <span className="block overflow-hidden pb-4 -mb-4">
+                                    {"Software".split('').map((char, charIdx) => (
+                                        <motion.span
+                                            key={charIdx}
+                                            initial={{ y: "100%", opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{
+                                                duration: 0.8,
+                                                delay: charIdx * 0.05 + 0.5,
+                                                ease: [0.215, 0.61, 0.355, 1]
+                                            }}
+                                            className="inline-block"
+                                        >
                                             {char === ' ' ? '\u00A0' : char}
                                         </motion.span>
                                     ))}
-                                </AnimatePresence>
-                            </motion.div>
+                                </span>
+                                <span className="block text-blue-600 dark:text-blue-400 overflow-hidden pb-4 -mb-4">
+                                    {"Engineer".split('').map((char, charIdx) => (
+                                        <motion.span
+                                            key={charIdx}
+                                            initial={{ y: "100%", opacity: 0 }}
+                                            animate={{ y: 0, opacity: 1 }}
+                                            transition={{
+                                                duration: 0.8,
+                                                delay: (8 + charIdx) * 0.05 + 0.8,
+                                                ease: [0.215, 0.61, 0.355, 1]
+                                            }}
+                                            className="inline-block"
+                                        >
+                                            {char === ' ' ? '\u00A0' : char}
+                                        </motion.span>
+                                    ))}
+                                </span>
+                            </motion.h1>
 
                             {/* Intro Text */}
                             <motion.div
@@ -308,13 +342,20 @@ const HeroSoftware: React.FC = () => {
                                 variants={{ visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } }, hidden: { opacity: 0, y: 30 } }}
                             >
                                 <motion.div variants={isMobile ? mobileButtonVariants : buttonVariants} whileHover="hover" whileTap="tap">
-                                    <Button className="w-full sm:w-auto px-6 py-3 text-base font-[Roboto Mono]">
-                                        <Link href="#projects" className="scroll-smooth flex items-center justify-center w-full">View Projects</Link>
+                                    <Button
+                                        className="w-full sm:w-auto px-6 py-3 text-base font-[Roboto Mono]"
+                                        onClick={() => handleScroll('projects')}
+                                    >
+                                        View Projects
                                     </Button>
                                 </motion.div>
                                 <motion.div variants={isMobile ? mobileButtonVariants : buttonVariants} whileHover="hover" whileTap="tap">
-                                    <Button variant="outline" className="w-full sm:w-auto px-6 py-3 text-base font-[Roboto Mono]">
-                                        <Link href="#resume" className="scroll-smooth flex items-center justify-center w-full">Download Resume</Link>
+                                    <Button
+                                        variant="outline"
+                                        className="w-full sm:w-auto px-6 py-3 text-base font-[Roboto Mono]"
+                                        onClick={() => handleScroll('resume')}
+                                    >
+                                        Download Resume
                                     </Button>
                                 </motion.div>
                             </motion.div>
@@ -358,9 +399,9 @@ const HeroSoftware: React.FC = () => {
                                 {/* Glow Effect */}
                                 <motion.div className="absolute -inset-10 rounded-full bg-blue-400/20 dark:bg-blue-600/20 blur-xl z-[-1] pointer-events-none" animate={{ scale: [1, 1.05, 1], opacity: [0.4, 0.6, 0.4] }} transition={{ duration: 5, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }} />
                                 {/* Data Points (Desktop Only & Reduced) */}
-                                {!isMobile && (
-                                    [...Array(8)].map((_, i) => (
-                                        <motion.div key={i} className="absolute w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400 pointer-events-none" initial={{ x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%`, opacity: 0 }} animate={{ opacity: [0, 0.7, 0], scale: [0, 1, 0] }} transition={{ duration: 2.5 + Math.random() * 2.5, repeat: Infinity, delay: Math.random() * 6 }} />
+                                {mounted && !isMobile && (
+                                    imageParticles.map((p, i) => (
+                                        <motion.div key={i} className="absolute w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400 pointer-events-none" initial={{ x: p.x, y: p.y, opacity: 0 }} animate={{ opacity: [0, 0.7, 0], scale: [0, 1, 0] }} transition={{ duration: p.duration, repeat: Infinity, delay: p.delay }} />
                                     ))
                                 )}
                             </div>
@@ -391,7 +432,7 @@ const HeroSoftware: React.FC = () => {
                             <motion.div className="text-lg font-mono text-gray-500 dark:text-gray-100"> Scroll Down </motion.div>
                             {/* Dots */}
                             <motion.div className="flex gap-1 mt-2">
-                                {[...Array(3)].map((_, i) => ( <motion.div key={i} className="h-1 w-1 bg-red-500 dark:bg-red-400 rounded-full" animate={{ scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity, ease: "easeInOut" }} /> ))}
+                                {[...Array(3)].map((_, i) => (<motion.div key={i} className="h-1 w-1 bg-red-500 dark:bg-red-400 rounded-full" animate={{ scale: [1, 1.5, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 1.5, delay: i * 0.2, repeat: Infinity, ease: "easeInOut" }} />))}
                             </motion.div>
                         </motion.div>
                     </motion.section>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const TypingIntro = () => {
+export const TypingIntro = () => {
     const fullText =
         "I'm a Software Engineer and Data Scientist passionate about building scalable systems and uncovering insights from data. I blend coding expertise with analytical thinking to solve complex, real-world problems. Explore my work with your relevance and get in touch with me!";
 
@@ -26,4 +26,3 @@ const TypingIntro = () => {
     );
 };
 
-export default TypingIntro;
