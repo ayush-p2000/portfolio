@@ -257,9 +257,9 @@ export default function ProjectsSoftware() {
                     border-color: transparent;
                 }
                 [data-floating="true"] .mobile-filter-btn {
-                    background-color: rgba(255,255,255,0.88);
-                    color: #171717;
-                    border-color: rgba(229,229,229,0.7);
+                    background-color: #171717;
+                    color: #ffffff;
+                    border-color: transparent;
                     box-shadow: 0 8px 32px rgba(0,0,0,0.18);
                     padding: 11px 18px;
                     transform: scale(0.92);
@@ -267,9 +267,9 @@ export default function ProjectsSoftware() {
                     -webkit-backdrop-filter: blur(16px);
                 }
                 html.dark [data-floating="true"] .mobile-filter-btn {
-                    background-color: rgba(23,23,23,0.88);
-                    color: #ffffff;
-                    border-color: rgba(64,64,64,0.7);
+                    background-color: #ffffff;
+                    color: #171717;
+                    border-color: transparent;
                 }
             `}</style>
 

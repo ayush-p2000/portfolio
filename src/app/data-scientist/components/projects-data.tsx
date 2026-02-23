@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { FiGithub, FiExternalLink, FiCpu, FiTerminal, FiLayers, FiActivity, FiSearch } from 'react-icons/fi'
+import { FiGithub, FiExternalLink, FiCpu, FiTerminal, FiLayers, FiActivity, FiFilter, FiChevronDown } from 'react-icons/fi'
 import { FaBrain, FaChartBar, FaDatabase, FaMicrochip, FaRobot } from 'react-icons/fa'
 import { SiPython, SiTensorflow, SiScikitlearn, SiPytorch } from 'react-icons/si'
 
@@ -84,6 +84,9 @@ const filters = [
     { name: 'Data Engineering', icon: <FiCpu /> },
 ]
 
+// Navbar height — matches top-24 (96px)
+const FLOAT_TOP = 96
+
 const ProjectCard = ({ project, index }: { project: Project, index: number }) => {
     return (
         <motion.div
@@ -157,15 +160,97 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
 
 export default function ProjectsSection() {
     const [activeFilter, setActiveFilter] = useState('All')
-    const sectionRef = useRef(null)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [isFloating, setIsFloating] = useState(false)
+    const sectionRef = useRef<HTMLElement>(null)
+    const filterWrapperRef = useRef<HTMLDivElement>(null)
+    const phantomRef = useRef<HTMLDivElement>(null)
+    const isFloatingRef = useRef(false)
 
     const filteredProjects =
         activeFilter === 'All'
             ? projects
             : projects.filter(p => p.category === activeFilter || p.category.includes(activeFilter))
 
+    useEffect(() => {
+        const wrapper = filterWrapperRef.current
+        const phantom = phantomRef.current
+        if (!wrapper || !phantom) return
+
+        const handleScroll = () => {
+            if (!isFloatingRef.current) {
+                const rect = wrapper.getBoundingClientRect()
+                if (rect.top <= FLOAT_TOP) {
+                    phantom.style.width = `${rect.width}px`
+                    phantom.style.height = `${rect.height}px`
+                    phantom.style.display = 'block'
+
+                    wrapper.style.position = 'fixed'
+                    wrapper.style.top = `${FLOAT_TOP}px`
+                    wrapper.style.right = '24px'
+                    wrapper.style.zIndex = '50'
+
+                    wrapper.setAttribute('data-floating', 'true')
+
+                    isFloatingRef.current = true
+                    setIsFloating(true)
+                }
+            } else {
+                const phantomRect = phantom.getBoundingClientRect()
+                if (phantomRect.top > FLOAT_TOP) {
+                    wrapper.style.position = ''
+                    wrapper.style.top = ''
+                    wrapper.style.right = ''
+                    wrapper.style.zIndex = ''
+
+                    phantom.style.display = 'none'
+
+                    wrapper.removeAttribute('data-floating')
+
+                    isFloatingRef.current = false
+                    setIsFloating(false)
+                }
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
     return (
         <section id="projects" ref={sectionRef} className="relative w-full pt-10 pb-24 overflow-hidden scroll-mt-0">
+            <style>{`
+                .mobile-filter-btn {
+                    background-color: #171717;
+                    color: #ffffff;
+                    border-color: transparent;
+                    padding: 14px 22px;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+                    transition: background-color 0.3s, color 0.3s, border-color 0.3s,
+                                box-shadow 0.3s, padding 0.3s, transform 0.3s, backdrop-filter 0.3s;
+                }
+                html.dark .mobile-filter-btn {
+                    background-color: #ffffff;
+                    color: #171717;
+                    border-color: transparent;
+                }
+                [data-floating="true"] .mobile-filter-btn {
+                    background-color: #171717;
+                    color: #ffffff;
+                    border-color: transparent;
+                    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+                    padding: 11px 18px;
+                    transform: scale(0.92);
+                    backdrop-filter: blur(16px);
+                    -webkit-backdrop-filter: blur(16px);
+                }
+                html.dark [data-floating="true"] .mobile-filter-btn {
+                    background-color: #ffffff;
+                    color: #171717;
+                    border-color: transparent;
+                }
+            `}</style>
+
             <div className="container mx-auto px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -179,7 +264,7 @@ export default function ProjectsSection() {
                     <div className="w-24 h-2 bg-emerald-600 dark:bg-emerald-500 mx-auto rounded-full" />
                 </motion.div>
 
-                <div className="flex flex-wrap justify-center gap-3 mb-20">
+                <div className="hidden lg:flex flex-wrap justify-center gap-3 mb-20">
                     {filters.map((filter) => (
                         <button
                             key={filter.name}
@@ -193,6 +278,58 @@ export default function ProjectsSection() {
                             <span className="relative z-10">{filter.name}</span>
                         </button>
                     ))}
+                </div>
+
+                {/* Mobile Filter */}
+                <div className="flex justify-end mb-8 lg:hidden">
+                    <div ref={phantomRef} style={{ display: 'none' }} aria-hidden="true" />
+
+                    <div ref={filterWrapperRef} className="relative">
+                        <AnimatePresence mode="wait">
+                            {isDropdownOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                                    className="absolute top-full right-0 mt-4 w-56 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl z-50"
+                                >
+                                    <div className="p-2 space-y-1">
+                                        {filters.map((filter) => (
+                                            <button
+                                                key={filter.name}
+                                                onClick={() => {
+                                                    setActiveFilter(filter.name)
+                                                    setIsDropdownOpen(false)
+                                                }}
+                                                className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all ${activeFilter === filter.name
+                                                    ? 'bg-emerald-600 text-white'
+                                                    : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800'
+                                                    }`}
+                                            >
+                                                <span className="text-lg">{filter.icon}</span>
+                                                {filter.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <button
+                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                            className="mobile-filter-btn flex items-center gap-3 rounded-full border"
+                        >
+                            <FiFilter
+                                className={`text-lg transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                            />
+                            <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+                                {activeFilter === 'All' ? 'Filter' : activeFilter}
+                            </span>
+                            <FiChevronDown
+                                className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                            />
+                        </button>
+                    </div>
                 </div>
 
                 <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
