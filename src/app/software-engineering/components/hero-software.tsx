@@ -24,6 +24,23 @@ type SkillBadge = {
     name: string;
 }
 
+type Particle = {
+    x: number;
+    y: number;
+    opacity: number;
+    scale: number;
+    drift: number;
+    duration: number;
+    delay: number;
+};
+
+type ImageParticle = {
+    x: string | number;
+    y: string | number;
+    duration: number;
+    delay: number;
+};
+
 // --- Hooks ---
 
 // Simple hook to check for touch device
@@ -45,8 +62,8 @@ const HeroSoftware: React.FC = () => {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [mounted, setMounted] = useState<boolean>(false);
     const [mousePosition, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
-    const [particles, setParticles] = useState<any[]>([]);
-    const [imageParticles, setImageParticles] = useState<any[]>([]);
+    const [particles, setParticles] = useState<Particle[]>([]);
+    const [imageParticles, setImageParticles] = useState<ImageParticle[]>([]);
     const sectionRef = useRef<HTMLElement>(null);
 
     // Animation Controls (for non-transform or sequenced animations)

@@ -12,7 +12,6 @@ import UnifiedProjects from "@/components/unified-projects";
 export default function Home() {
   return (
     <>
-      <HeroHeader />
       <Cursor />
       <ParallaxHero />
       <ProfessionalSummary />

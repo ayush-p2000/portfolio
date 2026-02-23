@@ -150,8 +150,8 @@ const Skills = () => {
                     viewport={{ once: true }}
                     className="text-center mb-16"
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
-                        Technical Arsenal
+                    <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter text-neutral-900 dark:text-white">
+                        Technical <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Arsenal</span>
                     </h2>
                     <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         A comprehensive toolkit enabling me to bridge the gap between software engineering and data science.

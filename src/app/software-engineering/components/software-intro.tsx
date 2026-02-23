@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const SoftwareIntro = () => {
     const fullText =
-        "I'm a versatile developer specializing in web, mobile, and software development. With expertise in Java, Python, JavaScript, and TypeScript, I build cross-platform solutions that deliver exceptional user experiences. My technical breadth allows me to architect complete systems from database design to responsive interfaces, turning complex requirements into elegant, maintainable code.";
+        "I&apos;m a versatile developer specializing in web, mobile, and software development. With expertise in Java, Python, JavaScript, and TypeScript, I build cross-platform solutions that deliver exceptional user experiences. My technical breadth allows me to architect complete systems from database design to responsive interfaces, turning complex requirements into elegant, maintainable code.";
 
     const keywords = [
         "JavaScript",
@@ -49,8 +49,8 @@ const SoftwareIntro = () => {
                 <span
                     key={`kw-${match.index}`}
                     className={`font-semibold ${isActive
-                            ? 'text-blue-600 dark:text-blue-400 transition-colors duration-300'
-                            : 'text-gray-900 dark:text-gray-50'
+                        ? 'text-blue-600 dark:text-blue-400 transition-colors duration-300'
+                        : 'text-gray-900 dark:text-gray-50'
                         }`}
                 >
                     {matched}

@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.*
+package-lock.json
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -41,6 +42,5 @@ yarn-error.log*
 next-env.d.ts
 
 /.idea
-package-lock.json
 
 

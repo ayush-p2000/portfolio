@@ -41,6 +41,11 @@ export const useActiveSection = (sectionIds: string[], offset: number = 80) => {
                 }
             });
 
+            if (window.scrollY < 50) {
+                setActiveSection(sectionIds[0]);
+                return;
+            }
+
             if (currentActiveId) {
                 setActiveSection(currentActiveId);
             }

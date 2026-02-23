@@ -11,7 +11,7 @@ const SummaryCard = ({
     delay,
     color
 }: {
-    icon: any,
+    icon: React.ElementType,
     title: string,
     description: string,
     delay: number,
@@ -81,7 +81,7 @@ export default function ProfessionalSummary() {
             <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none animate-pulse-slow-reverse" />
 
             <div className="container mx-auto px-6 relative z-10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 
                     {/* Content Column */}
                     <motion.div
@@ -100,11 +100,11 @@ export default function ProfessionalSummary() {
 
                         <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter text-neutral-900 dark:text-white">
                             Bridging Engineering <br />
-                            & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Intelligence.</span>
+                            &amp; <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Intelligence.</span>
                         </h2>
 
                         <p className="text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed mb-10">
-                            I specialize in building at the intersection of robust engineering and advanced analytics. My goal is to create systems that aren't just functional, but inherently intelligent.
+                            I specialize in building at the intersection of robust engineering and advanced analytics. My goal is to create systems that aren&apos;t just functional, but inherently intelligent.
                         </p>
 
                         <div className="flex flex-wrap gap-8">

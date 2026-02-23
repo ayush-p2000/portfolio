@@ -4,7 +4,7 @@
 import { SmoothScrollLink } from '@/components/smooth-scroll-link';
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ArrowLeft } from 'lucide-react'
 import React, { useState } from 'react'
 import { ModeToggle } from "@/components/mode-toggle";
 import { useActiveSection } from '@/hooks/use-active-section';
@@ -36,6 +36,13 @@ export const DataHeader = () => {
                 <div className="mx-auto max-w-6xl px-6 py-4">
                     <div className="relative flex items-center justify-between gap-6 px-6 py-3 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-2xl rounded-2xl border border-white/20 dark:border-neutral-800/50 shadow-2xl">
                         <div className="flex items-center gap-12">
+                            <Link
+                                href="/"
+                                className="mr-2 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400"
+                                aria-label="Go back"
+                            >
+                                <ArrowLeft size={20} />
+                            </Link>
                             <Link
                                 href="/"
                                 aria-label="home"

@@ -57,5 +57,5 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 )
 Button.displayName = "Button"
-motion(Button);
-export { Button, buttonVariants }
+const MotionButton = motion.create(Button);
+export { Button, MotionButton, buttonVariants }

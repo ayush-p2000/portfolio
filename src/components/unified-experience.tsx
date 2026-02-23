@@ -17,7 +17,7 @@ interface ExperienceItemProps {
     isRight: boolean;
     isActive: boolean;
     onClick: () => void;
-    icon: any;
+    icon: React.ElementType;
     logoBg?: "light" | "dark" | "none";
 }
 
@@ -174,7 +174,7 @@ interface ExperienceData {
     description: string[];
     logo?: string;
     color: string;
-    icon: any;
+    icon: React.ElementType;
     logoBg?: "light" | "dark" | "none";
 }
 

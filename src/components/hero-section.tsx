@@ -55,6 +55,11 @@ const HeroSection = () => {
     const spotlightX = useTransform(mouseX, [-0.5, 0.5], ["0%", "100%"]);
     const spotlightY = useTransform(mouseY, [-0.5, 0.5], ["0%", "100%"]);
 
+    const backgroundGradient = useTransform(
+        [spotlightX, spotlightY],
+        ([sx, sy]) => `radial-gradient(600px circle at ${sx} ${sy}, rgba(124, 58, 237, 0.15), transparent 40%)`
+    );
+
     useEffect(() => {
         const checkTouch = () => {
             setIsTouchDevice(typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0));
@@ -82,7 +87,7 @@ const HeroSection = () => {
     };
 
     return (
-        <div className="relative w-full min-h-screen overflow-x-hidden bg-white dark:bg-neutral-950 text-gray-900 dark:text-white selection:bg-cyan-500/30 transition-colors duration-300">
+        <div id="home" className="relative w-full min-h-screen overflow-x-hidden bg-white dark:bg-neutral-950 text-gray-900 dark:text-white selection:bg-cyan-500/30 transition-colors duration-300">
             {/* --- Background Particles --- */}
             <div className="fixed inset-0 w-full h-full -z-10 pointer-events-none">
                 {mounted && (
@@ -122,15 +127,12 @@ const HeroSection = () => {
                         <motion.div
                             className="absolute inset-0 rounded-3xl z-0 pointer-events-none opacity-50"
                             style={{
-                                background: useTransform(
-                                    [spotlightX, spotlightY],
-                                    ([sx, sy]) => `radial-gradient(600px circle at ${sx} ${sy}, rgba(124, 58, 237, 0.15), transparent 40%)`
-                                )
+                                background: backgroundGradient
                             }}
                         />
                     )}
 
-                    <div className="relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                    <div className="relative z-10 flex flex-col lg:flex-row lg:items-start items-center gap-12 lg:gap-20 lg:pt-8">
                         {/* --- Left Content: Text --- */}
                         <motion.div
                             className="flex-1 text-center lg:text-left space-y-8"
@@ -146,7 +148,7 @@ const HeroSection = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
                                 >
-                                    <span className="inline-block font-mono font-extrabold text-5xl sm:text-5xl md:text-5xl lg:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-500 dark:from-violet-400 dark:via-fuchsia-400 dark:to-cyan-400 pr-2">
+                                    <span className="inline-block font-mono font-extrabold text-5xl sm:text-5xl md:text-5xl lg:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-violet-500 via-fuchsia-500 to-cyan-500 dark:from-violet-400 dark:via-fuchsia-400 dark:to-cyan-400 pr-2">
                                         Ayush Prajapati
                                     </span>
                                 </motion.div>
@@ -159,7 +161,7 @@ const HeroSection = () => {
                                 transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
                             >
                                 <p>
-                                    I'm an AI-Driven Software Engineer passionate about building intelligent, scalable systems. I blend full-stack expertise with data science to solve complex, real-world problems. Explore my work and let's build the future together!
+                                    I&apos;m an AI-Driven Software Engineer passionate about building intelligent, scalable systems. I blend full-stack expertise with data science to solve complex, real-world problems. Explore my work and let&apos;s build the future together!
                                 </p>
                             </motion.div>
 
@@ -198,26 +200,30 @@ const HeroSection = () => {
                                         Explore Deep Dives
                                     </span>
                                     <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-                                        <Button
-                                            asChild
-                                            variant="outline"
-                                            className="h-11 border-gray-200 dark:border-white/10 bg-white/30 dark:bg-white/5 hover:bg-violet-500/5 dark:hover:bg-violet-500/10 text-gray-700 dark:text-gray-300 backdrop-blur-md transition-all group px-5 rounded-xl border-dashed hover:border-solid hover:border-violet-500/50"
-                                        >
-                                            <Link href="/software-engineering" className="flex items-center gap-2">
-                                                <FiCode className="text-violet-500 dark:text-violet-400 group-hover:scale-110 transition-transform" />
-                                                <span className="text-sm font-semibold">Software Engineering</span>
-                                            </Link>
-                                        </Button>
-                                        <Button
-                                            asChild
-                                            variant="outline"
-                                            className="h-11 border-gray-200 dark:border-white/10 bg-white/30 dark:bg-white/5 hover:bg-cyan-500/5 dark:hover:bg-cyan-500/10 text-gray-700 dark:text-gray-300 backdrop-blur-md transition-all group px-5 rounded-xl border-dashed hover:border-solid hover:border-cyan-500/50"
-                                        >
-                                            <Link href="/data-scientist" className="flex items-center gap-2">
-                                                <FiDatabase className="text-cyan-500 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
-                                                <span className="text-sm font-semibold">Data Scientist</span>
-                                            </Link>
-                                        </Button>
+                                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                            <Button
+                                                asChild
+                                                variant="outline"
+                                                className="h-11 border-gray-200 dark:border-white/10 bg-white/30 dark:bg-white/5 hover:bg-violet-500/10 dark:hover:bg-violet-500/20 text-gray-700 dark:text-gray-300 backdrop-blur-md transition-all group px-5 rounded-xl border-dashed hover:border-solid hover:border-violet-500/50 shadow-sm hover:shadow-violet-500/20"
+                                            >
+                                                <Link href="/software-engineering" className="flex items-center gap-2">
+                                                    <FiCode className="text-violet-500 dark:text-violet-400 group-hover:scale-110 transition-transform" />
+                                                    <span className="text-sm font-semibold">Software Engineering</span>
+                                                </Link>
+                                            </Button>
+                                        </motion.div>
+                                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                            <Button
+                                                asChild
+                                                variant="outline"
+                                                className="h-11 border-gray-200 dark:border-white/10 bg-white/30 dark:bg-white/5 hover:bg-cyan-500/10 dark:hover:bg-cyan-500/20 text-gray-700 dark:text-gray-300 backdrop-blur-md transition-all group px-5 rounded-xl border-dashed hover:border-solid hover:border-cyan-500/50 shadow-sm hover:shadow-cyan-500/20"
+                                            >
+                                                <Link href="/data-scientist" className="flex items-center gap-2">
+                                                    <FiDatabase className="text-cyan-500 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
+                                                    <span className="text-sm font-semibold">Data Scientist</span>
+                                                </Link>
+                                            </Button>
+                                        </motion.div>
                                     </div>
                                 </div>
                             </motion.div>
