@@ -309,7 +309,12 @@ export default function ProjectsSoftware() {
                     <div ref={phantomRef} style={{ display: 'none' }} aria-hidden="true" />
 
                     {/* Wrapper: position toggled imperatively; data-floating drives CSS colors */}
-                    <div ref={filterWrapperRef} className="relative">
+                    <motion.div
+                        ref={filterWrapperRef}
+                        className="relative"
+                        animate={isFloating ? { scale: 0.96, y: -8 } : { scale: 1, y: 0 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 28, mass: 0.4 }}
+                    >
                         <AnimatePresence mode="wait">
                             {isDropdownOpen && (
                                 <motion.div
@@ -355,7 +360,7 @@ export default function ProjectsSoftware() {
                                 className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
                             />
                         </button>
-                    </div>
+                    </motion.div>
                 </div>
 
                 <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3">
