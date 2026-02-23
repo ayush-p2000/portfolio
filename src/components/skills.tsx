@@ -19,6 +19,9 @@ import {
     FaCode,
 } from "react-icons/fa";
 import {
+    TbBrandCSharp,
+} from "react-icons/tb";
+import {
     SiTypescript,
     SiJavascript,
     SiNextdotjs,
@@ -42,6 +45,7 @@ import {
     SiNvidia,
     SiGooglecloud,
     SiSocketdotio,
+    SiDotnet,
 } from "react-icons/si";
 
 interface Iskill {
@@ -83,6 +87,8 @@ const skillCategories: SkillCategory[] = [
             { name: "AWS", icon: <FaAws />, color: "#FF9900" },
             { name: "GCP", icon: <SiGooglecloud />, color: "#4285F4" },
             { name: "Socket.io", icon: <SiSocketdotio />, color: "#010101" },
+            { name: "C#", icon: <TbBrandCSharp />, color: "#239120" },
+            { name: ".NET", icon: <SiDotnet />, color: "#512BD4" },
         ],
     },
     {
