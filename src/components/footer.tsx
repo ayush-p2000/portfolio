@@ -93,9 +93,9 @@ export default function Footer() {
                 style={{
                     background: `linear-gradient(
             135deg,
-            rgba(255, 0, 0, 0.3) 0%,
-            rgba(0, 255, 0, 0.3) 50%,
-            rgba(0, 0, 255, 0.3) 100%
+            rgba(255, 0, 0, 0.6) 0%,
+            rgba(0, 255, 0, 0.6) 50%,
+            rgba(0, 0, 255, 0.6) 100%
           )`
                 }}
             />
