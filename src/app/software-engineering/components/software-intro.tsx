@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const SoftwareIntro = () => {
     const fullText =
-        "I&apos;m a versatile developer specializing in web, mobile, and software development. With expertise in Java, Python, JavaScript, and TypeScript, I build cross-platform solutions that deliver exceptional user experiences. My technical breadth allows me to architect complete systems from database design to responsive interfaces, turning complex requirements into elegant, maintainable code.";
+        "I'm a versatile developer specializing in web, mobile, and software development. With expertise in Java, Python, JavaScript, and TypeScript, I build cross-platform solutions that deliver exceptional user experiences. My technical breadth allows me to architect complete systems from database design to responsive interfaces, turning complex requirements into elegant, maintainable code.";
 
     const keywords = [
         "JavaScript",

@@ -109,7 +109,7 @@ const HeroSection = () => {
             <HeroHeader />
 
             <section
-                className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] py-12 md:py-20 perspective-1000"
+                className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-80px)] pt-24 pb-12 md:py-20 perspective-1000"
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
             >
@@ -161,7 +161,7 @@ const HeroSection = () => {
                                 transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
                             >
                                 <p>
-                                    I&apos;m an AI-Driven Software Engineer passionate about building intelligent, scalable systems. I blend full-stack expertise with data science to solve complex, real-world problems. Explore my work and let&apos;s build the future together!
+                                    I'm an AI-Driven Software Engineer passionate about building intelligent, scalable systems. I blend full-stack expertise with data science to solve complex, real-world problems. Explore my work and let's build the future together!
                                 </p>
                             </motion.div>
 

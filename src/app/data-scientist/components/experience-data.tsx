@@ -201,12 +201,7 @@ const ExperienceCard: React.FC<ExperienceItemProps> = ({
                                         <SkillBadge icon={<SiApacheairflow />} text="Airflow" color={color} />
                                     </>
                                 )}
-                                {company === "McDonald's" && (
-                                    <>
-                                        <SkillBadge icon={<FiAward />} text="Customer Care" color={color} />
-                                        <SkillBadge icon={<CgInfinity />} text="Agile Op" color={color} />
-                                    </>
-                                )}
+
                             </div>
                         </motion.div>
                     </div>
@@ -300,18 +295,7 @@ export default function ExperienceSection() {
             ],
             color: "#10b981"
         },
-        {
-            company: "McDonald's",
-            position: "Customer Care Assistant",
-            period: "12/2023 - 07/2025",
-            location: "Sheffield, South Yorkshire",
-            description: [
-                "Delivered excellent customer service, handling customer inquiries and orders in a fast-paced environment.",
-                "Managed customer issues and resolved them effectively, enhancing overall customer satisfaction.",
-                "Quickly adapted to different roles, ensuring a smooth customer experience through communication and teamwork."
-            ],
-            color: "#8b5cf6"
-        }
+
     ];
 
     const floatingSkills: { name: string, icon: React.ReactNode, delay: number, x: [string, string], y: [string, string] }[] = [
@@ -409,7 +393,7 @@ export default function ExperienceSection() {
 
                         <h3 className="text-3xl font-bold dark:text-white mb-4 italic">The Next Data Challenge?</h3>
                         <p className="text-neutral-500 dark:text-neutral-400 max-w-lg mx-auto mb-10 text-lg leading-relaxed">
-                            I am actively seeking roles where I can build predictive systems and push the boundaries of AI &amp; Data Science.
+                            I am actively seeking roles where I can build predictive systems and push the boundaries of AI & Data Science.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">

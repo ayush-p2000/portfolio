@@ -100,11 +100,11 @@ export default function ProfessionalSummary() {
 
                         <h2 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter text-neutral-900 dark:text-white">
                             Bridging Engineering <br />
-                            &amp; <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Intelligence.</span>
+                            & <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Intelligence.</span>
                         </h2>
 
                         <p className="text-xl text-neutral-600 dark:text-neutral-400 leading-relaxed mb-10">
-                            I specialize in building at the intersection of robust engineering and advanced analytics. My goal is to create systems that aren&apos;t just functional, but inherently intelligent.
+                            I specialize in building at the intersection of robust engineering and advanced analytics. My goal is to create systems that aren't just functional, but inherently intelligent.
                         </p>
 
                         <div className="flex flex-wrap gap-8">

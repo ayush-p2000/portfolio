@@ -434,7 +434,7 @@ export default function ExperienceSoftware() {
 
                         <h3 className="text-3xl font-bold dark:text-white mb-4 italic">The Next Milestone?</h3>
                         <p className="text-neutral-500 dark:text-neutral-400 max-w-lg mx-auto mb-10 text-lg leading-relaxed">
-                            I am actively seeking roles where I can architect robust systems and push the boundaries of what&apos;s possible in software engineering.
+                            I am actively seeking roles where I can architect robust systems and push the boundaries of what's possible in software engineering.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">

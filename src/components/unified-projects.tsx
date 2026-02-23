@@ -31,7 +31,7 @@ const projects: Project[] = [
     {
         title: 'Semantic Tableaux Logic Solver',
         category: 'AI / Logic',
-        description: 'High-performance logic solver developed for Master&apos;s dissertation at University of Sheffield. Applies basic and advanced Semantic Tableaux in Propositional and Modal Logics with real-time visualization.',
+        description: "High-performance logic solver developed for Master's dissertation at University of Sheffield. Applies basic and advanced Semantic Tableaux in Propositional and Modal Logics with real-time visualization.",
         tags: ['Python', 'Streamlit', 'Logic', 'NetworkX', 'Matplotlib', 'AI'],
         github: 'https://github.com/ayush-p2000/semantic-tableaux',
         featured: true,
@@ -326,7 +326,7 @@ export default function UnifiedProjects({ initialFilter = "All", showFilters = t
                                 Curious to see more?
                             </h3>
                             <p className="text-gray-600 dark:text-gray-400 mb-8">
-                                My full open-source portfolio is available on GitHub, featuring couple of projects I&apos;ve worked on.
+                                My full open-source portfolio is available on GitHub, featuring couple of projects I've worked on.
                             </p>
 
                             <Button

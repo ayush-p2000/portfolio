@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const DataIntro = () => {
     const fullText =
-        "I&apos;m a Data Scientist driven by curiosity and precision. I transform raw data into actionable insights, build predictive models that scale, and collaborate across teams to solve meaningful problems. Whether it&apos;s optimizing decisions or uncovering trends, I bring data to life with code.";
+        "I'm a Data Scientist driven by curiosity and precision. I transform raw data into actionable insights, build predictive models that scale, and collaborate across teams to solve meaningful problems. Whether it's optimizing decisions or uncovering trends, I bring data to life with code.";
 
     const keywords = [
         "Data Scientist",

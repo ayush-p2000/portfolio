@@ -32,33 +32,35 @@ export const HeroHeader = () => {
                 data-state={menuState ? 'active' : 'inactive'}
                 className="bg-background/50 fixed z-50 w-full border-b backdrop-blur-3xl transition-all duration-300 ease-in-out"
             >
-                <div className="mx-auto max-w-6xl px-6">
-                    <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
-                        <div className="flex w-full items-center justify-between gap-12 lg:w-auto">
+                <div className="mx-auto max-w-6xl px-4 md:px-6">
+                    <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4 md:px-6">
+                        <div className="flex w-full items-center justify-between lg:w-auto lg:gap-12">
                             <Link
                                 href="/"
                                 aria-label="home"
-                                className="flex items-center space-x-2"
+                                className="flex items-center"
                             >
                                 <Logo />
                             </Link>
 
-                            <ModeToggle />
+                            <div className="flex items-center gap-2 lg:gap-12">
+                                <ModeToggle />
 
-                            <button
-                                onClick={() => setMenuState(!menuState)}
-                                aria-label={menuState ? 'Close Menu' : 'Open Menu'}
-                                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
-                            >
-                                <Menu
-                                    className={`m-auto size-6 transition-all duration-300 ease-in-out ${menuState ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
-                                        }`}
-                                />
-                                <X
-                                    className={`absolute inset-0 m-auto size-6 transition-all duration-300 ease-in-out ${menuState ? 'rotate-0 scale-100 opacity-100' : '-rotate-180 scale-0 opacity-0'
-                                        }`}
-                                />
-                            </button>
+                                <button
+                                    onClick={() => setMenuState(!menuState)}
+                                    aria-label={menuState ? 'Close Menu' : 'Open Menu'}
+                                    className="relative z-20 block cursor-pointer p-2 lg:hidden"
+                                >
+                                    <Menu
+                                        className={`m-auto size-5 transition-all duration-300 ease-in-out ${menuState ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+                                            }`}
+                                    />
+                                    <X
+                                        className={`absolute inset-0 m-auto size-5 transition-all duration-300 ease-in-out ${menuState ? 'rotate-0 scale-100 opacity-100' : '-rotate-180 scale-0 opacity-0'
+                                            }`}
+                                    />
+                                </button>
+                            </div>
                         </div>
 
                         {/* Mobile menu with RGB highlight */}

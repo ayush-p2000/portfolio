@@ -33,40 +33,44 @@ export const SoftwareHeader = () => {
                 data-state={menuState ? 'active' : 'inactive'}
                 className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
             >
-                <div className="mx-auto max-w-6xl px-6 py-4">
-                    <div className="relative flex items-center justify-between gap-6 px-6 py-3 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-2xl rounded-2xl border border-white/20 dark:border-neutral-800/50 shadow-2xl">
-                        <div className="flex items-center gap-12">
-                            <Link
-                                href="/"
-                                className="mr-2 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400"
-                                aria-label="Go back"
-                            >
-                                <ArrowLeft size={20} />
-                            </Link>
-                            <Link
-                                href="/"
-                                aria-label="home"
-                                className="flex items-center space-x-2"
-                            >
-                                <Logo />
-                            </Link>
+                <div className="mx-auto max-w-6xl px-2 py-4 md:px-6">
+                    <div className="relative flex items-center justify-between px-3 py-3 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-2xl rounded-2xl border border-white/20 dark:border-neutral-800/50 shadow-2xl md:px-6">
+                        <div className="flex w-full items-center justify-between lg:w-auto lg:gap-12">
+                            <div className="flex items-center gap-2 lg:gap-12">
+                                <Link
+                                    href="/"
+                                    className="p-1 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-neutral-600 dark:text-neutral-400"
+                                    aria-label="Go back"
+                                >
+                                    <ArrowLeft size={18} />
+                                </Link>
+                                <Link
+                                    href="/"
+                                    aria-label="home"
+                                    className="flex items-center"
+                                >
+                                    <Logo />
+                                </Link>
+                            </div>
 
-                            <ModeToggle />
+                            <div className="flex items-center gap-2 lg:gap-12">
+                                <ModeToggle />
 
-                            <button
-                                onClick={() => setMenuState(!menuState)}
-                                aria-label={menuState ? 'Close Menu' : 'Open Menu'}
-                                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer rounded-full p-2.5 transition-colors hover:bg-foreground/10 lg:hidden"
-                            >
-                                <Menu
-                                    className={`m-auto size-6 transition-all duration-300 ease-in-out ${menuState ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
-                                        }`}
-                                />
-                                <X
-                                    className={`absolute inset-0 m-auto size-6 transition-all duration-300 ease-in-out ${menuState ? 'rotate-0 scale-100 opacity-100' : '-rotate-180 scale-0 opacity-0'
-                                        }`}
-                                />
-                            </button>
+                                <button
+                                    onClick={() => setMenuState(!menuState)}
+                                    aria-label={menuState ? 'Close Menu' : 'Open Menu'}
+                                    className="relative z-20 block cursor-pointer rounded-full p-2 transition-colors hover:bg-foreground/10 lg:hidden"
+                                >
+                                    <Menu
+                                        className={`m-auto size-5 transition-all duration-300 ease-in-out ${menuState ? 'rotate-180 scale-0 opacity-0' : 'rotate-0 scale-100 opacity-100'
+                                            }`}
+                                    />
+                                    <X
+                                        className={`absolute inset-0 m-auto size-5 transition-all duration-300 ease-in-out ${menuState ? 'rotate-0 scale-100 opacity-100' : '-rotate-180 scale-0 opacity-0'
+                                            }`}
+                                    />
+                                </button>
+                            </div>
                         </div>
 
                         {/* Mobile menu with RGB highlight */}
@@ -159,6 +163,6 @@ export const SoftwareHeader = () => {
                     }
                 }
             `}</style>
-        </header>
+        </header >
     )
 }
