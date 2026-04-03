@@ -73,7 +73,7 @@ export default function ResumeSection() {
     const onDocumentLoadSuccess = useCallback(async ({ numPages }: { numPages: number }) => {
         setNumPages(numPages)
         try {
-            const pdf = await pdfjs.getDocument("/Software_Ayush (2).pdf").promise
+            const pdf = await pdfjs.getDocument("/Resume_Ayush.pdf").promise
             const page = await pdf.getPage(1)
             const viewport = page.getViewport({ scale: 1 })
             setAspectRatio(viewport.height / viewport.width)
@@ -182,7 +182,7 @@ export default function ResumeSection() {
                                     size="lg"
                                     className="px-10 py-7 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-2xl font-black uppercase tracking-widest shadow-2xl hover:scale-105 transition-all"
                                 >
-                                    <a href="/Software_Ayush (2).pdf" download="Software_Ayush.pdf">
+                                    <a href="/Resume_Ayush.pdf" download="Resume_Ayush.pdf">
                                         Download PDF
                                     </a>
                                 </Button>
@@ -230,7 +230,7 @@ export default function ResumeSection() {
                             </div>
 
                             <Document
-                                file="/Software_Ayush (2).pdf"
+                                file="/Resume_Ayush.pdf"
                                 onLoadSuccess={onDocumentLoadSuccess}
                                 loading={
                                     <div className="flex flex-col items-center justify-center h-[600px] w-full bg-neutral-50 dark:bg-neutral-950/20 gap-4">
@@ -314,7 +314,7 @@ export default function ResumeSection() {
 
                                         <div className="pl-1 ml-1 border-l border-neutral-200 dark:border-neutral-700">
                                             <ToolbarButton
-                                                onClick={() => window.open("/Software_Ayush (2).pdf", "_blank")}
+                                                onClick={() => window.open("/Resume_Ayush.pdf", "_blank")}
                                                 icon="↗"
                                             />
                                         </div>

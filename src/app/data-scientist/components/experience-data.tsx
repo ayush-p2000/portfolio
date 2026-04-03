@@ -189,8 +189,8 @@ const ExperienceCard: React.FC<ExperienceItemProps> = ({
                                 {company === "Wipro Technologies" && (
                                     <>
                                         <SkillBadge icon={<FaPython />} text="Python" color={color} />
-                                        <SkillBadge icon={<SiMysql />} text="SQL" color={color} />
-                                        <SkillBadge icon={<CgInfinity />} text="CI/CD" color={color} />
+                                        <SkillBadge icon={<FaCloud />} text="AWS" color={color} />
+                                        <SkillBadge icon={<CgInfinity />} text="Kubernetes" color={color} />
                                     </>
                                 )}
                                 {company === "Onlei Technologies" && (
@@ -270,13 +270,13 @@ export default function ExperienceSection() {
         {
             company: "Wipro Technologies",
             position: "Systems Engineer",
-            period: "07/2022 - 08/2023",
+            period: "Jul 2022 - Aug 2023",
             location: "Coimbatore, India",
             description: [
+                "Built Python-based data pipelines and ML inference services, implementing Kubernetes orchestration and achieving 40% faster deployment cycles.",
+                "Managed CI/CD pipelines using Jenkins and GitHub Actions, automating deployments across environments on AWS (EC2, S3, Lambda).",
                 "Managed SQL databases (MSSQL and Oracle) on RedHat Linux systems, ensuring data integrity and high performance.",
-                "Developed Python scripts for automating data extraction and transformation, improving efficiency by 35%.",
-                "Resolved client issues via ServiceNow and improved ticket assignment processes.",
-                "Implemented CI/CD pipelines and automated unit tests to enhance deployment reliability.",
+                "Automated complex financial reporting engines using Python, saving 200+ manual hours per month.",
                 "Collaborated in Agile teams using Jira and Scrum, contributing to timely project delivery."
             ],
             color: "#3b82f6"

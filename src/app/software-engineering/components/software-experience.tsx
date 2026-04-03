@@ -197,20 +197,20 @@ const ExperienceCard: React.FC<ExperienceItemProps> = ({
                                 <CgInfinity className="text-lg" /> STACK:
                             </div>
                             <div className="flex flex-wrap gap-2">
-                                {company === "Accenture" && (
+                                {company === "Accenture (UOB)" && (
                                     <>
-                                        <SkillBadge icon={<SiDotnet />} text=".NET 8" color={color} />
+                                        <SkillBadge icon={<SiDotnet />} text=".NET Core" color={color} />
                                         <SkillBadge icon={<FaReact />} text="React" color={color} />
                                         <SkillBadge icon={<SiTypescript />} text="TS" color={color} />
-                                        <SkillBadge icon={<FaDatabase />} text="SQL" color={color} />
+                                        <SkillBadge icon={<FaDatabase />} text="MSSQL" color={color} />
                                     </>
                                 )}
                                 {company === "Wipro Technologies" && (
                                     <>
-                                        <SkillBadge icon={<SiPython />} text="Python" color={color} />
-                                        <SkillBadge icon={<SiMysql />} text="MSSQL" color={color} />
+                                        <SkillBadge icon={<FaReact />} text="React" color={color} />
+                                        <SkillBadge icon={<FaNodeJs />} text="Node.js" color={color} />
                                         <SkillBadge icon={<SiDocker />} text="Docker" color={color} />
-                                        <SkillBadge icon={<SiJenkins />} text="CI/CD" color={color} />
+                                        <SkillBadge icon={<SiJenkins />} text="Jenkins" color={color} />
                                     </>
                                 )}
                                 {company === "Onlei Technologies" && (
@@ -275,15 +275,15 @@ export default function ExperienceSoftware() {
 
     const experiences: Experience[] = [
         {
-            company: "Accenture",
+            company: "Accenture (UOB)",
             position: "Senior Software Engineer",
             period: "Aug 2025 - Present",
             location: "Kuala Lumpur, Malaysia (Hybrid)",
             description: [
-                "Driving architectural modernization of mission-critical banking systems from .NET Framework to .NET 8.",
-                "Reducing system latency by 45% through high-concurrency optimization and database refactoring.",
-                "Pioneering automated CI/CD workflows that slashed deployment windows from 6 hours to 45 minutes.",
-                "Mentoring a cross-functional team of 5 developers in React.js and TypeScript best practices."
+                "Lead frontend development team using React (v16-19), TypeScript, and Redux, building reusable UI libraries and handling build tasks while supporting backend development with C# .NET MVC for enterprise banking applications.",
+                "Architect scalable RESTful APIs and design API changes with MSSQL, utilizing LINQ optimization to reduce API response times by 60%, improving system performance for millions of customers.",
+                "Own end-to-end CI/CD pipeline using Jenkins and Bitbucket, ensuring automated builds and zero-downtime releases for mission-critical banking systems.",
+                "Mentor junior engineers and colleagues on system design and functional alignment, manage Jira defect dashboards, and work closely with delivery managers and clients to ensure alignment on development priorities."
             ],
             color: "#A100FF",
             logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Accenture.svg/2560px-Accenture.svg.png"
@@ -291,13 +291,13 @@ export default function ExperienceSoftware() {
         {
             company: "Wipro Technologies",
             position: "System Engineer",
-            period: "Feb 2023 - Aug 2023",
+            period: "Jul 2022 - Aug 2023",
             location: "Coimbatore, India",
             description: [
-                "Orchestrated large-scale SQL database migrations across RedHat Linux environments with zero data loss.",
-                "Automated complex financial reporting engines using Python, saving 200+ manual hours per month.",
-                "Maintained 99.9% uptime for core banking backend services through proactive monitoring and performance tuning.",
-                "Implemented enterprise-grade security protocols for data-at-rest and data-in-transit."
+                "Developed full-stack applications using React (TypeScript), Node.js, and Express, building RESTful APIs handling 10K+ daily transactions with 99.9% uptime.",
+                "Managed CI/CD pipelines using Jenkins and GitHub Actions, automating deployments across environments on AWS (EC2, S3, Lambda) with Docker containerization.",
+                "Implemented Kubernetes orchestration for ML inference services, achieving 40% faster deployment cycles.",
+                "Orchestrated large-scale SQL database migrations across RedHat Linux environments with zero data loss."
             ],
             color: "#3b82f6",
             logo: "/wipro.png"

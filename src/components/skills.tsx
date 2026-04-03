@@ -46,6 +46,8 @@ import {
     SiGooglecloud,
     SiSocketdotio,
     SiDotnet,
+    SiGithubactions,
+    SiKubernetes,
 } from "react-icons/si";
 
 interface Iskill {
@@ -89,6 +91,7 @@ const skillCategories: SkillCategory[] = [
             { name: "Socket.io", icon: <SiSocketdotio />, color: "#010101" },
             { name: "C#", icon: <TbBrandCSharp />, color: "#239120" },
             { name: ".NET", icon: <SiDotnet />, color: "#512BD4" },
+            { name: "Kubernetes", icon: <SiKubernetes />, color: "#326CE5" },
         ],
     },
     {
@@ -112,6 +115,7 @@ const skillCategories: SkillCategory[] = [
             { name: "Git", icon: <FaGitAlt />, color: "#F05032" },
             { name: "Jira", icon: <SiJira />, color: "#0052CC" },
             { name: "Jenkins", icon: <SiJenkins />, color: "#D24939" },
+            { name: "GitHub Actions", icon: <SiGithubactions />, color: "#2088FF" },
             { name: "SonarQube", icon: <SiSonarqube />, color: "#4E9BCD" },
             { name: "Linux", icon: <SiLinux />, color: "#FCC624" },
             { name: "Antigravity", icon: <FaRobot />, color: "#8B5CF6" },

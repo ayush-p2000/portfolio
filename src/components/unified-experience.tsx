@@ -191,18 +191,16 @@ const UnifiedExperience = () => {
 
     const experiences: ExperienceData[] = [
         {
-            company: "Accenture",
+            company: "Accenture (UOB)",
             position: "Senior Software Engineer",
             period: "Aug 2025 - Present",
             location: "Kuala Lumpur, Malaysia (Hybrid)",
             icon: FiTerminal,
             description: [
-                "Led the critical upgrade of client's core software from .NET Framework 4.5 to .NET 8, utilizing C#, ASP.NET MVC, and SQL Server to modernize legacy financial systems and enhance performance by 40%.",
-                "Architecting migration strategies using Visual Studio, Jenkins CI/CD pipelines, and Bitbucket Git version control, ensuring zero-downtime deployment of mission-critical banking applications.",
-                "Refactoring enterprise codebases with TypeScript, React.js, and LINQ optimization techniques while implementing Agile methodologies.",
-                "Conducting thorough code reviews using SonarQube for quality assurance.",
-                "Managing project workflows through Jira for sprint planning, task tracking, and team coordination.",
-                "Collaborating with cross-functional teams to integrate cloud technologies, RESTful APIs, and modern JavaScript frameworks."
+                "Senior Software Engineer at Accenture (UOB) with strong ownership of end-to-end development, designing and delivering scalable C# .NET MVC workflows and RESTful APIs, utilizing LINQ and MSSQL to optimize backend performance and reduce response times by 60%.",
+                "Frontend technical lead for multiple modules using React (v16–19), TypeScript, and Redux, reworking legacy components, building reusable UI libraries, and integrating optimized backend REST APIs.",
+                "Owned CI/CD and release processes using Jenkins and Bitbucket, ensuring automated builds, zero-downtime releases for mission-critical banking systems, and adherence to enterprise engineering standards.",
+                "Actively mentored and guided junior engineers, conducting code reviews, enforcing best practices, assisting with design decisions, and supporting Agile delivery through Jira, while collaborating with cross-functional teams."
             ],
             color: "#A100FF",
             logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Accenture.svg/2560px-Accenture.svg.png",
@@ -241,14 +239,14 @@ const UnifiedExperience = () => {
         {
             company: "Wipro Technologies",
             position: "System Engineer",
-            period: "Feb 2023 - Aug 2023",
+            period: "Jul 2022 - Aug 2023",
             location: "Coimbatore, India",
             icon: FiCode,
             description: [
-                "Managed SQL databases (MSSQL and Oracle) on Red Hat Linux systems, ensuring data integrity and high performance.",
-                "Developed Python scripts for automating data extraction and transformation, improving efficiency by 35%.",
-                "Resolved client issues via ServiceNow and improved ticket assignment processes.",
-                "Implemented CI/CD pipelines and automated unit tests to enhance deployment reliability."
+                "Developed full-stack applications using React (TypeScript), Node.js, and Express, building RESTful APIs handling 10K+ daily transactions with 99.9% uptime.",
+                "Managed CI/CD pipelines using Jenkins and GitHub Actions, automating deployments across environments on AWS (EC2, S3, Lambda) with Docker containerization.",
+                "Built Python-based data pipelines and ML inference services, implementing Kubernetes orchestration and achieving 40% faster deployment cycles.",
+                "Managed SQL databases (MSSQL and Oracle) on Red Hat Linux systems, ensuring data integrity and high performance."
             ],
             color: "#3b82f6",
             logo: "/wipro.png",
